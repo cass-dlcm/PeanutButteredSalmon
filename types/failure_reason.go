@@ -1,3 +1,3 @@
-package enums
+package types
 
 type FailureReason string

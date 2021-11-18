@@ -1,4 +1,4 @@
-package enums
+package types
 
 import (
 	"fmt"
@@ -41,4 +41,21 @@ func GetAllTides() []Tide {
 		Nt,
 		Lt,
 	}
+}
+
+type TideArr []Tide
+
+func (t *TideArr) IsAllElementExist(arr []Tide) bool {
+	for _, i := range *t {
+		found := false
+		for _, j := range arr {
+			if i == j {
+				found = true
+			}
+		}
+		if !found {
+			return false
+		}
+	}
+	return true
 }

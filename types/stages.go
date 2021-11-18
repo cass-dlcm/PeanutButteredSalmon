@@ -1,4 +1,4 @@
-package enums
+package types
 
 import (
 	"fmt"
@@ -71,4 +71,13 @@ func GetAllStages() []Stage {
 		SalmonidSmokeyard,
 		RuinsOfArkPolaris,
 	}
+}
+
+func (s *Stage) IsElementExists(arr []Stage) bool {
+	for _, v := range arr {
+		if v == *s {
+			return true
+		}
+	}
+	return false
 }

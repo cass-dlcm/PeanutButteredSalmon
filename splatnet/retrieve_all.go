@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-func getAllShifts(appHead http.Header, client *http.Client, save bool) ShiftList {
+func GetAllShifts(appHead http.Header, client *http.Client, save bool) ShiftList {
 	if _, err := fmt.Println("Pulling Salmon Run data from online..."); err != nil {
 		panic(err)
 	}
@@ -52,12 +52,12 @@ func getAllShifts(appHead http.Header, client *http.Client, save bool) ShiftList
 
 	if err := json.NewDecoder(resp.Body).Decode(&data); err != nil {
 		iksm.GenNewCookie("auth", "1.6.0", client)
-		return getAllShifts(appHead, client, save)
+		return GetAllShifts(appHead, client, save)
 	}
 
 	if data.Code != nil {
 		iksm.GenNewCookie("auth", "1.6.0", client)
-		return getAllShifts(appHead, client, save)
+		return GetAllShifts(appHead, client, save)
 	}
 
 	if save {
@@ -80,5 +80,41 @@ func getAllShifts(appHead http.Header, client *http.Client, save bool) ShiftList
 		}
 	}
 
+	return data
+}
+
+
+func LoadFromFile() []ShiftSplatnet {
+	f, err := os.Open("shifts")
+	if err != nil {
+		log.Panicln(err)
+	}
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+
+		}
+	}(f)
+	files, err := f.Readdirnames(-1)
+	if err != nil {
+		log.Panicln(err)
+	}
+	data := []ShiftSplatnet{}
+	for i := range files {
+		data = append(data, func(fileName string) ShiftSplatnet{
+			f, err := os.Open(fmt.Sprintf("shifts/%s", fileName))
+			if err != nil {
+				log.Panicln(err)
+			}
+			data := ShiftSplatnet{}
+			if err := json.NewDecoder(f).Decode(&data); err != nil {
+				if err2 := f.Close(); err2 != nil {
+					log.Panicln(fmt.Errorf("%v\n%v", err2, err))
+				}
+				log.Panicln(err)
+			}
+			return data
+		}(files[i]))
+	}
 	return data
 }

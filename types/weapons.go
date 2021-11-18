@@ -1,4 +1,4 @@
-package enums
+package types
 
 import (
 	"fmt"
@@ -42,4 +42,13 @@ func GetWeaponArgs(weaponsStr string) ([]WeaponSchedule, error) {
 		weapons = append(weapons, weaponVal)
 	}
 	return weapons, nil
+}
+
+func (w *WeaponSchedule) IsElementExists(arr []WeaponSchedule) bool {
+	for _, v := range arr {
+		if v == *w {
+			return true
+		}
+	}
+	return false
 }

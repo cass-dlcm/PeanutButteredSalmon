@@ -4,10 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"time"
 )
 
-import "PeanutButteredSalmon/enums"
+import "PeanutButteredSalmon/types"
 
 type ShiftList struct {
 	Code    *string `json:"code"`
@@ -73,7 +72,7 @@ type ShiftList struct {
 	Results []ShiftSplatnet `json:"results"`
 }
 
-func (s *ShiftSplatnet) TotalEggs() int {
+func (s *ShiftSplatnet) GetTotalEggs() int {
 	sum := 0
 	for i := range s.WaveDetails {
 		sum += s.WaveDetails[i].GoldenEggs
@@ -104,7 +103,7 @@ type ShiftSplatnet struct {
 
 type ShiftSplatnetJobResult struct {
 	IsClear       bool                 `json:"is_clear,omitempty"`
-	FailureReason *enums.FailureReason `json:"failure_reason,omitempty"`
+	FailureReason *types.FailureReason `json:"failure_reason,omitempty"`
 	FailureWave   *int                 `json:"failure_wave,omitempty"`
 }
 
@@ -284,37 +283,37 @@ type gender string
 
 type species string
 
-func getSplatnetStage(s enums.Stage) stageName {
+func getSplatnetStage(s types.Stage) stageName {
 	switch s {
-	case enums.LostOutpost:
+	case types.LostOutpost:
 		return outpost
-	case enums.MaroonersBay:
+	case types.MaroonersBay:
 		return bay
-	case enums.SpawningGrounds:
+	case types.SpawningGrounds:
 		return grounds
-	case enums.SalmonidSmokeyard:
+	case types.SalmonidSmokeyard:
 		return smokeyard
-	case enums.RuinsOfArkPolaris:
+	case types.RuinsOfArkPolaris:
 		return polaris
 	}
 	return ""
 }
 
-func getSplatnetEvent(e enums.Event) event {
+func getSplatnetEvent(e types.Event) event {
 	switch e {
-	case enums.Griller:
+	case types.Griller:
 		return griller
-	case enums.Fog:
+	case types.Fog:
 		return fog
-	case enums.CohockCharge:
+	case types.CohockCharge:
 		return cohockCharge
-	case enums.GoldieSeeking:
+	case types.GoldieSeeking:
 		return goldieSeeking
-	case enums.Mothership:
+	case types.Mothership:
 		return mothership
-	case enums.WaterLevels:
+	case types.WaterLevels:
 		return waterLevels
-	case enums.Rush:
+	case types.Rush:
 		return rush
 	}
 	return ""
@@ -341,6 +340,26 @@ const (
 	rush          event = "rush"
 )
 
+func (e *event) ToEvent() types.Event {
+	switch *e {
+	case griller:
+		return types.Griller
+	case fog:
+		return types.Fog
+	case cohockCharge:
+		return types.CohockCharge
+	case goldieSeeking:
+		return types.GoldieSeeking
+	case mothership:
+		return types.Mothership
+	case waterLevels:
+		return types.WaterLevels
+	case rush:
+		return types.Rush
+	}
+	return -1
+}
+
 func (e *event) UnmarshalJSON(b []byte) error {
 	// Define a secondary type to avoid ending up with a recursive call to json.Unmarshal
 	type E event
@@ -354,108 +373,6 @@ func (e *event) UnmarshalJSON(b []byte) error {
 		return nil
 	}
 	return errors.New("Invalid event. Got: " + fmt.Sprint(e))
-}
-
-func (e *event) isElementExist(arr []event) bool {
-	for _, v := range arr {
-		if v == *e {
-			return true
-		}
-	}
-	return false
-}
-
-type RecordName string
-
-const (
-	totalGoldenEggs                RecordName = "Total Golden Eggs"
-	totalGoldenEggsTwoNight        RecordName = "Total Golden Eggs (~2 Night)"
-	totalGoldenEggsOneNight        RecordName = "Total Golden Eggs (~1 Night)"
-	totalGoldenEggsNoNight         RecordName = "Total Golden Eggs (No Night)"
-	singlePlayerGoldenEggs         RecordName = "Single Player Golden Eggs"
-	singlePlayerGoldenEggsTwoNight RecordName = "Single Player Golden Eggs (~2 Night)"
-	singlePlayerGoldenEggsOneNight RecordName = "Single Player Golden Eggs (~1 Night)"
-	singlePlayerGoldenEggsNoNight  RecordName = "Single Player Golden Eggs (No Night)"
-	ntNormal                       RecordName = "NT Normal"
-	htNormal                       RecordName = "HT Normal"
-	ltNormal                       RecordName = "LT Normal"
-	ntRush                         RecordName = "NT Rush"
-	htRush                         RecordName = "HT Rush"
-	ltRush                         RecordName = "LT Rush"
-	ntFog                          RecordName = "NT Fog"
-	htFog                          RecordName = "HT Fog"
-	ltFog                          RecordName = "LT Fog"
-	ntGoldieSeeking                RecordName = "NT Goldie Seeking"
-	htGoldieSeeking                RecordName = "HT Goldie Seeking"
-	ntGriller                      RecordName = "NT Griller"
-	htGriller                      RecordName = "HT Griller"
-	ntMothership                   RecordName = "NT Mothership"
-	htMothership                   RecordName = "HT Mothership"
-	ltMothershp                    RecordName = "LT Mothership"
-	ltCohockCharge                 RecordName = "LT Cohock Charge"
-)
-
-type Record struct {
-	Time         time.Time
-	RecordAmount int
-	Shift        ShiftSplatnet
-}
-
-func getRecordNames() []RecordName {
-	return []RecordName{
-		totalGoldenEggs,
-		totalGoldenEggsTwoNight,
-		totalGoldenEggsOneNight,
-		totalGoldenEggsNoNight,
-		singlePlayerGoldenEggs,
-		singlePlayerGoldenEggsTwoNight,
-		singlePlayerGoldenEggsOneNight,
-		singlePlayerGoldenEggsNoNight,
-		ntNormal,
-		htNormal,
-		ltNormal,
-		ntRush,
-		htRush,
-		ltRush,
-		ntFog,
-		htFog,
-		ltFog,
-		ntGoldieSeeking,
-		htGoldieSeeking,
-		ntGriller,
-		htGriller,
-		ntMothership,
-		htMothership,
-		ltMothershp,
-		ltCohockCharge,
-	}
-}
-
-func getStageNames() []stageName {
-	return []stageName{
-		smokeyard,
-		polaris,
-		grounds,
-		bay,
-		outpost,
-	}
-}
-
-func getAllRecords() map[RecordName]map[stageName]map[enums.WeaponSchedule]*Record {
-	records := map[RecordName]map[stageName]map[enums.WeaponSchedule]*Record{}
-	recordNames := getRecordNames()
-	stageNames := getStageNames()
-	weapons := enums.GetAllWeapons()
-	for i := range recordNames {
-		records[recordNames[i]] = map[stageName]map[enums.WeaponSchedule]*Record{}
-		for j := range stageNames {
-			records[recordNames[i]][stageNames[j]] = map[enums.WeaponSchedule]*Record{}
-			for k := range weapons {
-				records[recordNames[i]][stageNames[j]][weapons[k]] = &Record{}
-			}
-		}
-	}
-	return records
 }
 
 type tide string
@@ -490,14 +407,14 @@ func (t *tide) isElementExist(arr []tide) bool {
 	return false
 }
 
-func getSplatnetTide(t enums.Tide) tide {
-	switch t {
-	case enums.Lt:
-		return lt
-	case enums.Nt:
-		return nt
-	case enums.Ht:
-		return ht
+func (t *tide) ToTide() types.Tide {
+	switch *t {
+	case ht:
+		return types.Ht
+	case lt:
+		return types.Lt
+	case nt:
+		return types.Nt
 	}
 	return ""
 }
@@ -669,4 +586,8 @@ func (swse *weaponSchedule) UnmarshalJSON(b []byte) error {
 		return nil
 	}
 	return errors.New("Invalid weaponSchedule. Got: " + fmt.Sprint(*swse))
+}
+
+func (s *ShiftSplatnet) GetIdentifier() string {
+	return fmt.Sprintf("https://app.splatoon2.nintendo.net/api/coop_results/%d", s.JobId)
 }

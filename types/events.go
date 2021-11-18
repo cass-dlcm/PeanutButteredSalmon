@@ -1,4 +1,4 @@
-package enums
+package types
 
 import (
 	"fmt"
@@ -37,7 +37,7 @@ func (e Event) ToString() string {
 	return ""
 }
 
-func stringToEvent(eventStr string) (*Event, error) {
+func StringToEvent(eventStr string) (*Event, error) {
 	var eventRes Event
 	switch eventStr {
 	case "water_levels":
@@ -64,7 +64,7 @@ func GetEventArgs(eventStr string) ([]Event, error) {
 	events := []Event{}
 	eventsStrArr := strings.Split(eventStr, " ")
 	for i := range eventsStrArr {
-		eventVal, err := stringToEvent(eventsStrArr[i])
+		eventVal, err := StringToEvent(eventsStrArr[i])
 		if err != nil {
 			return nil, err
 		}
@@ -83,4 +83,21 @@ func GetAllEvents() []Event {
 		CohockCharge,
 		Mothership,
 	}
+}
+
+type EventArr []Event
+
+func (e *EventArr) IsAllElementExist(arr []Event) bool {
+	for _, i := range *e {
+		found := false
+		for _, j := range arr {
+			if i == j {
+				found = true
+			}
+		}
+		if !found {
+			return false
+		}
+	}
+	return true
 }
