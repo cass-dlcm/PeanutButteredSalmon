@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-var Version = version{1, 0, 0}
+var Version = version{1, 0, 1}
 
 type version struct {
 	Major uint64
@@ -47,7 +47,7 @@ func (v *version) ToString() string {
 }
 
 func CheckForUpdate(client *http.Client) {
-	url := "https://github.com/cass-dlcm/PeanutButteredSalmon/blob/main/types/version.go"
+	url := "https://raw.githubusercontent.com/cass-dlcm/PeanutButteredSalmon/main/types/version.go"
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
