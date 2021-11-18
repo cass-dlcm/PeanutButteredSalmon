@@ -23,10 +23,7 @@ func GetAllShifts(page int, server types.Server, client *http.Client, save bool)
 
 	getShifts := func (page int) ShiftPage {
 
-		if viper.GetString("user_id") == "" {
-		}
-
-		url := fmt.Sprintf("%splayers/%s/results?raw=1&count=200&page=%d", server.Address, viper.GetString("user_id"), page)
+		url := fmt.Sprintf("%splayers/%s/results", server.Address, viper.GetString("user_id"))
 
 		ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 		defer cancel()
@@ -35,6 +32,16 @@ func GetAllShifts(page int, server types.Server, client *http.Client, save bool)
 		if err != nil {
 			panic(err)
 		}
+
+		query := req.URL.Query()
+		query.Set("raw", "1")
+		query.Set("count", "200")
+		query.Set("page", fmt.Sprint(page))
+		req.URL.RawQuery = query.Encode()
+
+		log.Println(req.URL)
+
+
 
 		resp, err := client.Do(req)
 		if err != nil {
@@ -74,7 +81,7 @@ func GetAllShifts(page int, server types.Server, client *http.Client, save bool)
 					}
 				}
 
-				if err := ioutil.WriteFile(fmt.Sprintf("salmonstats_shifts/%s/%d.json", server.ShortName, data.Results[i].ID), fileText, 0600); err != nil {
+				if err := ioutil.WriteFile(fmt.Sprintf("salmonstats_shifts/%s/%010d.json", server.ShortName, data.Results[i].ID), fileText, 0600); err != nil {
 					log.Panicln(err)
 				}
 			}
@@ -97,9 +104,12 @@ func GetAllShifts(page int, server types.Server, client *http.Client, save bool)
 }
 
 
-func LoadFromFile() []ShiftSalmonStats {
-	f, err := os.Open("salmonstats_shifts")
+func LoadFromFile(server types.Server) []ShiftSalmonStats {
+	f, err := os.Open(fmt.Sprintf("salmonstats_shifts/%s", server.ShortName))
 	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return []ShiftSalmonStats{}
+		}
 		log.Panicln(err)
 	}
 	defer func(f *os.File) {
@@ -115,7 +125,7 @@ func LoadFromFile() []ShiftSalmonStats {
 	data := []ShiftSalmonStats{}
 	for i := range files {
 		data = append(data, func(fileName string) ShiftSalmonStats{
-			f, err := os.Open(fmt.Sprintf("salmonstats_shifts/%s", fileName))
+			f, err := os.Open(fmt.Sprintf("salmonstats_shifts/%s/%s", server.ShortName, fileName))
 			if err != nil {
 				log.Panicln(err)
 			}

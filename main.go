@@ -83,24 +83,24 @@ func getFlags() ([]types.Stage, []types.Event, []types.Tide, []types.WeaponSched
 	}
 
 	statInkUrlNicks := strings.Split(*statInk, " ")
-	statInkUrlConf := viper.Get("statink_servers").([]map[string]string)
+	statInkUrlConf := viper.Get("statink_servers").([]interface{})
 	statInkServers := []types.Server{}
 	for i := range statInkUrlNicks {
 		for j := range statInkUrlConf {
-			if statInkUrlConf[j]["short_name"] == statInkUrlNicks[i] {
-				statInkServers = append(statInkServers, types.Server{ShortName: statInkUrlConf[j]["short_name"], ApiKey: statInkUrlConf[j]["api_key"], Address: statInkUrlConf[j]["address"]})
+			if viper.GetString(fmt.Sprintf("statink_servers.%d.short_name", j)) == statInkUrlNicks[i] {
+				statInkServers = append(statInkServers, types.Server{ShortName: viper.GetString(fmt.Sprintf("statink_servers.%d.short_name", j)), ApiKey: viper.GetString(fmt.Sprintf("statink_servers.%d.api_key", j)), Address: viper.GetString(fmt.Sprintf("statink_servers.%d.address", j))})
 			}
 		}
 	}
 
 
 	salmonStatsUrlNicks := strings.Split(*salmonStats, " ")
-	salmonStatsUrlConf := viper.Get("splatstats_servers").([]map[string]string)
+	salmonStatsUrlConf := viper.Get("salmonstats_servers").([]interface{})
 	salmonStatsServers := []types.Server{}
 	for i := range salmonStatsUrlNicks {
 		for j := range salmonStatsUrlConf {
-			if salmonStatsUrlConf[j]["short_name"] == salmonStatsUrlNicks[i] {
-				salmonStatsServers = append(statInkServers, types.Server{ShortName: salmonStatsUrlConf[j]["short_name"], Address: salmonStatsUrlConf[j]["address"]})
+			if viper.Get(fmt.Sprintf("salmonstats_servers.%d.short_name", j)) == salmonStatsUrlNicks[i] {
+				salmonStatsServers = append(salmonStatsServers, types.Server{ShortName: viper.GetString(fmt.Sprintf("salmonstats_servers.%d.short_name", j)), Address: viper.GetString(fmt.Sprintf("salmonstats_servers.%d.address", j))})
 			}
 		}
 	}
@@ -139,6 +139,7 @@ func main() {
 			return http.ErrUseLastResponse
 		},
 	}
+	types.CheckForUpdate(client)
 	if !(viper.IsSet("user_lang")) || viper.GetString("user_lang") == "" {
 		setLanguage()
 	}
@@ -150,7 +151,7 @@ func main() {
 		"x-unique-id":       []string{"32449507786579989235"},
 		"x-requested-with":  []string{"XMLHttpRequest"},
 		"x-timezone-offset": []string{fmt.Sprint(timezone)},
-		"User-Agent":        []string{"Mozilla/5.0 (Linux; Android 7.1.2; Pixel Build/NJH47D; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/59.0.3071.125 Mobile Safari/537.36"},
+		"User-Agent":        []string{"Mozilla/5.0 (Linux; Android 7.1.2; Pixel Build/NJH47D; wv) AppleWebKit/537.36 (KHTML, like Gecko) version/4.0 Chrome/59.0.3071.125 Mobile Safari/537.36"},
 		"Accept":            []string{"*/*"},
 		"Referer":           []string{"https://app.splatoon2.nintendo.net/home"},
 		"Accept-Encoding":   []string{"gzip deflate"},

@@ -5,11 +5,17 @@ Peanut Buttered Salmon is a program that downloads data from the SplatNet 2 app 
 
 ## Usage
 
-```
-$ go run main.go [-a] [-stage ""] [-event ""] [-tide ""] [-weapon ""] [-save] [-load] [-splatnet] [-statink]
+If running using a Go install
+
+```Shell
+$ go run main.go [-stage ""] [-event ""] [-tide ""] [-weapon ""] [-save] [-load] [-splatnet] [-statink ""] [-salmonstats ""]
 ```
 
-The `-a` flag finds personal bests for all records with all combinations of events, stages, tides, and weapons.
+If running a binary
+
+```Shell
+$ ./peanutButteredSalmon [-stage ""] [-event ""] [-tide ""] [-weapon ""] [-save] [-load] [-splatnet] [-statink ""] [-salmonstats ""]
+```
 
 The `-stage` flag takes in a string with the set of stages to include like such: `"spawning_grounds marooners_bay lost_outpost salmonid_smokeyard ruins_of_ark_polaris"`
 
@@ -19,21 +25,23 @@ The `-tide` flag takes in a string with the set of tides to include like such: `
 
 The `-weapon` flag takes in a string with the set of weapon types to include like such: `"set single_random four_random random_gold"`
 
-The `-save` flag saves the downloaded data to a folder called `shifts` or `statink_shifts` in the current working directory.
+The `-save` flag saves the downloaded data to a folder called `shifts`, `statink_shifts/{server}`, or `salmonstats/{server}` in the current working directory.
 
-The `-load` flag loads the data from a folder called `shifts` or `statink_shifts` in the current working directory.
+The `-load` flag loads the data from a folder called `shifts`, `statink_shifts/{server}`, or `salmonstats/{server}` in the current working directory.
 
-The `-splatnet` flag downloads data from Splatnet 2.
+The `-splatnet` flag signals to download data from SplatNet 2.
 
-The `-statink` flag downloads data from stat.ink.
+The `-statink` flag signals to download data from a stat.ink instance. Use `-statink "official"` to use the https://stat.ink instance.
+
+The `-salmonstats` flag downloads data from a salmon-stats instance. Use `-salmonstats "official"` to use the https://salmon-stats-api.yuki.games instance.
 
 <!--The `-monitor` flag runs the script in monitoring mode, finding new personal bests as you play shifts. The script checks for new shifts every `N` seconds.-->
 
 ### Example usage
 
-Running `go run main.go -a -save -splatnet -monitor 900` from the command line launches the program in monitoring mode, checking on Splatnet 2 for new results, saving them, and finding personal bests every 15 minute.
+Running `go run main.go -save -splatnet -monitor 900` from the command line launches the program in monitoring mode, checking on Splatnet 2 for new results, saving them, and finding personal bests every 15 minute.
 
-Running `python splatnet2statink.py -a --statink` finds all personal bests from your data on stat.ink
+Running `go run main.go --statink` finds all personal bests from your data on stat.ink
 
 ## Features
 
@@ -55,11 +63,11 @@ Input features:
 - [x] reading from SplatNet 2
 - [x] reading from stat.ink
 - [x] reading from local files
-- [ ] reading from salmon-stats.yuki.games
+- [x] reading from salmon-stats.yuki.games
 
 ## Setup instructions
 
-*These instructions are meant to be accesssible and easy-to-follow for all users, and this is the recommended way to run the script. If you run into trouble, please reach out! However, an alternative [simple version](https://github.com/cass-dlcm/PeanutButteredSalmon/wiki/simple-setup-instructions) is also available.*
+*These instructions are meant to be accessible and easy-to-follow for all users, and this is the recommended way to run the script. If you run into trouble, please reach out! However, an alternative [simple version](https://github.com/cass-dlcm/PeanutButteredSalmon/wiki/simple-setup-instructions) is also available.*
 
 1. Download and install Go. On Windows, download the installer from the [official website](https://www.golang.org/dl/). On macOS, install [Homebrew](https://brew.sh/) and then run `brew install go`.
 
@@ -112,4 +120,4 @@ In this case, users must obtain their cookie from their phone by intercepting th
 
 ## License
 
-[GPLv3](https://www.gnu.org/licenses/gpl-3.0.html) or any later version
+[AGPLv3](https://www.gnu.org/licenses/agpl-3.0.html) or any later version

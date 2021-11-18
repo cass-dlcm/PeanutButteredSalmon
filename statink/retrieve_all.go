@@ -28,6 +28,7 @@ func GetAllShifts(id int, statInkServer types.Server, client *http.Client, save 
 		query.Set("newer_than", fmt.Sprint(id))
 		query.Set("order", "asc")
 		req.URL.RawQuery = query.Encode()
+		log.Println(req.URL)
 		resp, err := client.Do(req)
 		if err != nil {
 			log.Panicln(err)
@@ -62,7 +63,7 @@ func GetAllShifts(id int, statInkServer types.Server, client *http.Client, save 
 					}
 				}
 
-				if err := ioutil.WriteFile(fmt.Sprintf("statink_shifts/%s/%d.json", statInkServer.ShortName, data[i].SplatnetNumber), fileText, 0600); err != nil {
+				if err := ioutil.WriteFile(fmt.Sprintf("statink_shifts/%s/%010d.json", statInkServer.ShortName, data[i].SplatnetNumber), fileText, 0600); err != nil {
 					log.Panicln(err)
 				}
 			}
@@ -84,6 +85,9 @@ func GetAllShifts(id int, statInkServer types.Server, client *http.Client, save 
 func LoadFromFile(statInkServer types.Server) []ShiftStatInk {
 	f, err := os.Open(fmt.Sprintf("statink_shifts/%s", statInkServer.ShortName))
 	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return []ShiftStatInk{}
+		}
 		log.Panicln(err)
 	}
 	defer func(f *os.File) {

@@ -87,6 +87,9 @@ func GetAllShifts(appHead http.Header, client *http.Client, save bool) ShiftList
 func LoadFromFile() []ShiftSplatnet {
 	f, err := os.Open("shifts")
 	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return []ShiftSplatnet{}
+		}
 		log.Panicln(err)
 	}
 	defer func(f *os.File) {

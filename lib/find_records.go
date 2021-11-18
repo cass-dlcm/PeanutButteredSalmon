@@ -75,7 +75,9 @@ func FindRecords(useSplatnet, load bool, statInkServers, salmonStats []types.Ser
 			for j := range tempData {
 				data = append(data, &tempData[j])
 			}
-			id = tempData[len(tempData) - 1].ID
+			if len(tempData) > 0 {
+				id = tempData[len(tempData) - 1].ID
+			}
 		}
 		tempData := statink.GetAllShifts(id, statInkServers[i], client, save)
 		for j := range tempData {
@@ -85,11 +87,13 @@ func FindRecords(useSplatnet, load bool, statInkServers, salmonStats []types.Ser
 	for i := range salmonStats {
 		page := 1
 		if load {
-			tempData := salmonstats.LoadFromFile()
+			tempData := salmonstats.LoadFromFile(salmonStats[i])
 			for j := range tempData {
 				data = append(data, &tempData[j])
 			}
-			page = tempData[len(tempData) - 1].Page / 200 + 1
+			if len(tempData) > 0 {
+				page = tempData[len(tempData) - 1].Page / 200 + 1
+			}
 		}
 		tempData := salmonstats.GetAllShifts(page, salmonStats[i], client, save)
 		for j := range tempData {
