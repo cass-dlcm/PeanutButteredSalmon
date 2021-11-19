@@ -1,11 +1,11 @@
 package lib
 
 import (
-	"PeanutButteredSalmon/salmonstats"
-	"PeanutButteredSalmon/schedules"
-	"PeanutButteredSalmon/splatnet"
-	"PeanutButteredSalmon/statink"
-	"PeanutButteredSalmon/types"
+	"github.com/cass-dlcm/PeanutButteredSalmon/salmonstats"
+	"github.com/cass-dlcm/PeanutButteredSalmon/schedules"
+	"github.com/cass-dlcm/PeanutButteredSalmon/splatnet"
+	"github.com/cass-dlcm/PeanutButteredSalmon/statink"
+	"github.com/cass-dlcm/PeanutButteredSalmon/types"
 	"fmt"
 	"net/http"
 )

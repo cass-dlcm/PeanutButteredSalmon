@@ -1,10 +1,10 @@
 package main
 
 import (
-	"PeanutButteredSalmon/lib"
-	"PeanutButteredSalmon/types"
 	"flag"
 	"fmt"
+	"github.com/cass-dlcm/PeanutButteredSalmon/lib"
+	"github.com/cass-dlcm/PeanutButteredSalmon/types"
 	"github.com/spf13/viper"
 	"log"
 	"net/http"
@@ -87,6 +87,7 @@ func getFlags() ([]types.Stage, []types.Event, []types.Tide, []types.WeaponSched
 	if err := viper.UnmarshalKey("statink_servers", &statInkUrlConf); err != nil {
 		log.Panicln(err)
 	}
+	log.Println(statInkUrlConf)
 	statInkServers := []types.Server{}
 	for i := range statInkUrlNicks {
 		for j := range statInkUrlConf {
@@ -101,6 +102,7 @@ func getFlags() ([]types.Stage, []types.Event, []types.Tide, []types.WeaponSched
 	if err := viper.UnmarshalKey("salmonstats_servers", &salmonStatsUrlConf); err != nil {
 		log.Panicln(err)
 	}
+	log.Println(salmonStatsUrlConf)
 	salmonStatsServers := []types.Server{}
 	for i := range salmonStatsUrlNicks {
 		for j := range salmonStatsUrlConf {
@@ -116,7 +118,7 @@ func getFlags() ([]types.Stage, []types.Event, []types.Tide, []types.WeaponSched
 func main() {
 	viper.SetConfigName("config")
 	viper.AddConfigPath(".")
-	viper.SetConfigType("yaml")
+	viper.SetConfigType("json")
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
 			// Config file not found; ignore error if desired
@@ -134,7 +136,7 @@ func main() {
 				ShortName: "official",
 				 Address: "https://salmon-stats-api.yuki.games/api/",
 			}})
-			if err := viper.WriteConfigAs("./config.yaml"); err != nil {
+			if err := viper.WriteConfigAs("./config.json"); err != nil {
 				panic(err)
 			}
 		} else {

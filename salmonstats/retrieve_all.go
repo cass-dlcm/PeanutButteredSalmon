@@ -1,11 +1,11 @@
 package salmonstats
 
 import (
-	"PeanutButteredSalmon/types"
 	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/cass-dlcm/PeanutButteredSalmon/types"
 	"github.com/spf13/viper"
 	"io/ioutil"
 	"log"

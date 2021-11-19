@@ -1,7 +1,7 @@
 package statink
 
 import (
-	"PeanutButteredSalmon/types"
+	"github.com/cass-dlcm/PeanutButteredSalmon/types"
 	"context"
 	"encoding/json"
 	"errors"

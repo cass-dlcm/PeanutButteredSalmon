@@ -1,7 +1,7 @@
 package splatnet
 
 import (
-	"PeanutButteredSalmon/splatnet/iksm"
+	"github.com/cass-dlcm/PeanutButteredSalmon/splatnet/iksm"
 	"context"
 	"encoding/json"
 	"errors"
