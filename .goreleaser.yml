@@ -43,7 +43,7 @@ gomod:
     - GOPRIVATE=example.com/blah
   # Which Go binary to use.
   # Defaults to `go`.
-  gobinary: go1.17
+  gobinary: go
 signs:
   - artifacts: checksum
 source:
