@@ -21,7 +21,7 @@ func GetAllShifts(appHead http.Header, client *http.Client, save bool) ShiftList
 
 	url := "https://app.splatoon2.nintendo.net/api/coop_results"
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)

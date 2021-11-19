@@ -521,7 +521,7 @@ func getCookie(version string, client *http.Client) (string, string) {
 	userInfo := getUserInfo(userLang, idResponse, client)
 	nickname := userInfo.Nickname
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	req, err := http.NewRequestWithContext(ctx, "GET", "https://app.splatoon2.nintendo.net/?lang="+userLang, nil)

@@ -83,28 +83,32 @@ func getFlags() ([]types.Stage, []types.Event, []types.Tide, []types.WeaponSched
 	}
 
 	statInkUrlNicks := strings.Split(*statInk, " ")
-	statInkUrlConf := viper.Get("statink_servers").([]interface{})
+	var statInkUrlConf []types.Server
+	if err := viper.UnmarshalKey("statink_servers", &statInkUrlConf); err != nil {
+		log.Panicln(err)
+	}
 	statInkServers := []types.Server{}
 	for i := range statInkUrlNicks {
 		for j := range statInkUrlConf {
-			if viper.GetString(fmt.Sprintf("statink_servers.%d.short_name", j)) == statInkUrlNicks[i] {
-				statInkServers = append(statInkServers, types.Server{ShortName: viper.GetString(fmt.Sprintf("statink_servers.%d.short_name", j)), ApiKey: viper.GetString(fmt.Sprintf("statink_servers.%d.api_key", j)), Address: viper.GetString(fmt.Sprintf("statink_servers.%d.address", j))})
+			if statInkUrlConf[j].ShortName == statInkUrlNicks[i] {
+				statInkServers = append(statInkServers, statInkUrlConf[j])
 			}
 		}
 	}
 
-
 	salmonStatsUrlNicks := strings.Split(*salmonStats, " ")
-	salmonStatsUrlConf := viper.Get("salmonstats_servers").([]interface{})
+	var salmonStatsUrlConf []types.Server
+	if err := viper.UnmarshalKey("salmonstats_servers", &salmonStatsUrlConf); err != nil {
+		log.Panicln(err)
+	}
 	salmonStatsServers := []types.Server{}
 	for i := range salmonStatsUrlNicks {
 		for j := range salmonStatsUrlConf {
-			if viper.Get(fmt.Sprintf("salmonstats_servers.%d.short_name", j)) == salmonStatsUrlNicks[i] {
-				salmonStatsServers = append(salmonStatsServers, types.Server{ShortName: viper.GetString(fmt.Sprintf("salmonstats_servers.%d.short_name", j)), Address: viper.GetString(fmt.Sprintf("salmonstats_servers.%d.address", j))})
+			if salmonStatsUrlConf[j].ShortName == salmonStatsUrlNicks[i] {
+				salmonStatsServers = append(salmonStatsServers, salmonStatsUrlConf[j])
 			}
 		}
 	}
-
 
 	return stages, hasEvents, tides, weapons, *save, *load, statInkServers, *useSplatnet, salmonStatsServers, *m
 }
@@ -120,7 +124,16 @@ func main() {
 			viper.Set("cookie", "")
 			viper.Set("session_token", "")
 			viper.Set("user_lang", "")
-			viper.Set("statink_api_key", "")
+			viper.Set("user_id", "")
+			viper.Set("statink_servers", []types.Server{{
+				ShortName: "official",
+				ApiKey:    "",
+				Address:   "https://stat.ink/api/v2/",
+			}})
+			viper.Set("salmonstats_servers", []types.Server{{
+				ShortName: "official",
+				 Address: "https://salmon-stats-api.yuki.games/api/",
+			}})
 			if err := viper.WriteConfigAs("./config.yaml"); err != nil {
 				panic(err)
 			}
@@ -133,7 +146,16 @@ func main() {
 	viper.SetDefault("cookie", "")
 	viper.SetDefault("session_token", "")
 	viper.SetDefault("user_lang", "")
-	viper.SetDefault("statink_api_key", "")
+	viper.SetDefault("user_id", "")
+	viper.SetDefault("statink_servers", []types.Server{{
+		ShortName: "official",
+		ApiKey:    "",
+		Address:   "https://stat.ink/api/v2/",
+	}})
+	viper.SetDefault("salmonstats_servers", []types.Server{{
+		ShortName: "official",
+		Address: "https://salmon-stats-api.yuki.games/api/",
+	}})
 	client := &http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			return http.ErrUseLastResponse
