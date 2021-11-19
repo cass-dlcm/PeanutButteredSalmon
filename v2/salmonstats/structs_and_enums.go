@@ -2,8 +2,8 @@ package salmonstats
 
 import (
 	"fmt"
-	"github.com/cass-dlcm/PeanutButteredSalmon/schedules"
-	"github.com/cass-dlcm/PeanutButteredSalmon/types"
+	"github.com/cass-dlcm/PeanutButteredSalmon/v2/schedules"
+	"github.com/cass-dlcm/PeanutButteredSalmon/v2/types"
 	"log"
 	"time"
 )
@@ -200,5 +200,5 @@ func (s ShiftSalmonStats) GetTime() time.Time {
 }
 
 func (s ShiftSalmonStats) GetIdentifier() string {
-	return fmt.Sprintf("https://salmon-stats-api.yuki.games/api/players/%s/results?raw=1&count=1&page=%d", s.PlayerID, s.Page)
+	return fmt.Sprintf("https://salmon-stats-api.yuki.games/api/results/%d/", s.ID)
 }

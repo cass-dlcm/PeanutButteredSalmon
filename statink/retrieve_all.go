@@ -1,11 +1,11 @@
 package statink
 
 import (
-	"github.com/cass-dlcm/PeanutButteredSalmon/types"
 	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/cass-dlcm/PeanutButteredSalmon/types"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -15,7 +15,7 @@ import (
 
 func GetAllShifts(id int, statInkServer types.Server, client *http.Client, save bool) []ShiftStatInk {
 	var data []ShiftStatInk
-	getShift := func (id int) []ShiftStatInk {
+	getShift := func(id int) []ShiftStatInk {
 		url := fmt.Sprintf("%suser-salmon", statInkServer.Address)
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
@@ -72,15 +72,14 @@ func GetAllShifts(id int, statInkServer types.Server, client *http.Client, save 
 	}
 	for true {
 		tempData := getShift(id)
-		if len(tempData) == 0 || (len(data) != 0 && tempData[len(tempData) - 1].SplatnetNumber == data[len(data) - 1].ID) {
+		if len(tempData) == 0 || (len(data) != 0 && tempData[len(tempData)-1].SplatnetNumber == data[len(data)-1].ID) {
 			return data
 		}
 		data = append(data, tempData...)
-		id = data[len(data) - 1].ID
+		id = data[len(data)-1].ID
 	}
 	return nil
 }
-
 
 func LoadFromFile(statInkServer types.Server) []ShiftStatInk {
 	f, err := os.Open(fmt.Sprintf("statink_shifts/%s", statInkServer.ShortName))
@@ -102,7 +101,7 @@ func LoadFromFile(statInkServer types.Server) []ShiftStatInk {
 	}
 	data := []ShiftStatInk{}
 	for i := range files {
-		data = append(data, func(fileName string) ShiftStatInk{
+		data = append(data, func(fileName string) ShiftStatInk {
 			f, err := os.Open(fmt.Sprintf("statink_shifts/%s/%s", statInkServer.ShortName, fileName))
 			if err != nil {
 				log.Panicln(err)

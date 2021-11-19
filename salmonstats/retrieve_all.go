@@ -21,7 +21,7 @@ func GetAllShifts(page int, server types.Server, client *http.Client, save bool)
 
 	data := []ShiftSalmonStats{}
 
-	getShifts := func (page int) ShiftPage {
+	getShifts := func(page int) ShiftPage {
 
 		url := fmt.Sprintf("%splayers/%s/results", server.Address, viper.GetString("user_id"))
 
@@ -40,8 +40,6 @@ func GetAllShifts(page int, server types.Server, client *http.Client, save bool)
 		req.URL.RawQuery = query.Encode()
 
 		log.Println(req.URL)
-
-
 
 		resp, err := client.Do(req)
 		if err != nil {
@@ -94,7 +92,7 @@ func GetAllShifts(page int, server types.Server, client *http.Client, save bool)
 			return data
 		}
 		for i := range tempData.Results {
-			tempData.Results[i].Page = page * 200 + i
+			tempData.Results[i].Page = page*200 + i
 			tempData.Results[i].PlayerID = viper.GetString("user_id")
 			data = append(data, tempData.Results[i])
 		}
@@ -102,7 +100,6 @@ func GetAllShifts(page int, server types.Server, client *http.Client, save bool)
 	}
 	return nil
 }
-
 
 func LoadFromFile(server types.Server) []ShiftSalmonStats {
 	f, err := os.Open(fmt.Sprintf("salmonstats_shifts/%s", server.ShortName))
@@ -124,7 +121,7 @@ func LoadFromFile(server types.Server) []ShiftSalmonStats {
 	}
 	data := []ShiftSalmonStats{}
 	for i := range files {
-		data = append(data, func(fileName string) ShiftSalmonStats{
+		data = append(data, func(fileName string) ShiftSalmonStats {
 			f, err := os.Open(fmt.Sprintf("salmonstats_shifts/%s/%s", server.ShortName, fileName))
 			if err != nil {
 				log.Panicln(err)

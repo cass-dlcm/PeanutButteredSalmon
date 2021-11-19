@@ -1,12 +1,12 @@
 package lib
 
 import (
+	"fmt"
 	"github.com/cass-dlcm/PeanutButteredSalmon/salmonstats"
 	"github.com/cass-dlcm/PeanutButteredSalmon/schedules"
 	"github.com/cass-dlcm/PeanutButteredSalmon/splatnet"
 	"github.com/cass-dlcm/PeanutButteredSalmon/statink"
 	"github.com/cass-dlcm/PeanutButteredSalmon/types"
-	"fmt"
 	"net/http"
 )
 
@@ -76,7 +76,7 @@ func FindRecords(useSplatnet, load bool, statInkServers, salmonStats []types.Ser
 				data = append(data, &tempData[j])
 			}
 			if len(tempData) > 0 {
-				id = tempData[len(tempData) - 1].ID
+				id = tempData[len(tempData)-1].ID
 			}
 		}
 		tempData := statink.GetAllShifts(id, statInkServers[i], client, save)
@@ -92,7 +92,7 @@ func FindRecords(useSplatnet, load bool, statInkServers, salmonStats []types.Ser
 				data = append(data, &tempData[j])
 			}
 			if len(tempData) > 0 {
-				page = tempData[len(tempData) - 1].Page / 200 + 1
+				page = tempData[len(tempData)-1].Page/200 + 1
 			}
 		}
 		tempData := salmonstats.GetAllShifts(page, salmonStats[i], client, save)
@@ -246,13 +246,13 @@ func FindRecords(useSplatnet, load bool, statInkServers, salmonStats []types.Ser
 					continue
 				}
 				fmt.Printf("\t\t\t\"%v\": {\n\t\t\t\t\"Golden Eggs\": %d,\n\t\t\t\t\"Time\": \"%s\"\n\t\t\t\t\"URL\": \"%s\"\n\t\t\t}", weapons[k], (*(*records[recordNames[i]])[stages[j]])[weapons[k]].RecordAmount, (*(*records[recordNames[i]])[stages[j]])[weapons[k]].Time.Format("2006-01-02 15-04-05"), (*(*records[recordNames[i]])[stages[j]])[weapons[k]].Identifier)
-				if weaponsCount < countsStages[recordNames[i]][stages[j]] - 1 {
+				if weaponsCount < countsStages[recordNames[i]][stages[j]]-1 {
 					fmt.Print(",\n")
 				}
 				weaponsCount++
 			}
 			fmt.Print("\n\t\t}")
-			if stagesCount < countsRecords[recordNames[i]] - 1 {
+			if stagesCount < countsRecords[recordNames[i]]-1 {
 				fmt.Print(",\n")
 			}
 			stagesCount++

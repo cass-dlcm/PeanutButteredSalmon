@@ -2,8 +2,8 @@ package statink
 
 import (
 	"fmt"
-	"github.com/cass-dlcm/PeanutButteredSalmon/schedules"
-	"github.com/cass-dlcm/PeanutButteredSalmon/types"
+	"github.com/cass-dlcm/PeanutButteredSalmon/v2/schedules"
+	"github.com/cass-dlcm/PeanutButteredSalmon/v2/types"
 	"log"
 	"time"
 )

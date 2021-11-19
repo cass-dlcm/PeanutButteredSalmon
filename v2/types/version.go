@@ -83,7 +83,10 @@ func CheckForUpdate(client *http.Client) {
 		log.Println(err)
 	}
 	testVers := version{major, minor, bugfix}
-	if Version.CompareVersion(&testVers) == 1 {
+	versionComparison := Version.CompareVersion(&testVers)
+	if versionComparison == 1 {
 		log.Panicf("A new version is available. Please update to the new version.\nCurrent Version: %s\nNew Version: %s\nExiting.", Version.ToString(), testVers.ToString())
+	} else if versionComparison == -1 {
+		log.Printf("You are running a unreleased version.\nLatest released version:%s\nCurrent version:%s\n", testVers.ToString(), Version.ToString())
 	}
 }

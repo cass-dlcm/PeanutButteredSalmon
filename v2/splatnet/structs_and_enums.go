@@ -4,9 +4,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/cass-dlcm/PeanutButteredSalmon/v2/lib"
+	"log"
+	"os"
 )
 
-import "github.com/cass-dlcm/PeanutButteredSalmon/types"
+import "github.com/cass-dlcm/PeanutButteredSalmon/v2/types"
 
 type ShiftList struct {
 	Code    *string `json:"code"`
@@ -590,4 +593,28 @@ func (swse *weaponSchedule) UnmarshalJSON(b []byte) error {
 
 func (s *ShiftSplatnet) GetIdentifier() string {
 	return fmt.Sprintf("https://app.splatoon2.nintendo.net/api/coop_results/%d", s.JobId)
+}
+
+type ShiftSplatnetIterator struct {
+	files []string
+	index int
+}
+
+func (s *ShiftSplatnetIterator) Next() (lib.Shift, error) {
+	if s.index == len(s.files) {
+		return nil, errors.New("no more shifts")
+	}
+	f, err := os.Open(fmt.Sprintf("shifts/%s", s.files[s.index]))
+	if err != nil {
+		log.Panicln(err)
+	}
+	data := ShiftSplatnet{}
+	if err := json.NewDecoder(f).Decode(&data); err != nil {
+		if err2 := f.Close(); err2 != nil {
+			log.Panicln(fmt.Errorf("%v\n%v", err2, err))
+		}
+		log.Panicln(err)
+	}
+	s.index++
+	return &data, nil
 }

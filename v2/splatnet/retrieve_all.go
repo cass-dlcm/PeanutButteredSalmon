@@ -5,7 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/cass-dlcm/PeanutButteredSalmon/splatnet/iksm"
+	"github.com/cass-dlcm/PeanutButteredSalmon/v2/lib"
+	"github.com/cass-dlcm/PeanutButteredSalmon/v2/splatnet/iksm"
 	"github.com/spf13/viper"
 	"io/ioutil"
 	"log"
@@ -14,7 +15,7 @@ import (
 	"time"
 )
 
-func GetAllShifts(appHead http.Header, client *http.Client, save bool) ShiftList {
+func GetAllShifts(appHead http.Header, client *http.Client) {
 	if _, err := fmt.Println("Pulling Salmon Run data from online..."); err != nil {
 		panic(err)
 	}
@@ -52,35 +53,32 @@ func GetAllShifts(appHead http.Header, client *http.Client, save bool) ShiftList
 
 	if err := json.NewDecoder(resp.Body).Decode(&data); err != nil {
 		iksm.GenNewCookie("auth", "1.6.0", client)
-		return GetAllShifts(appHead, client, save)
+		GetAllShifts(appHead, client)
 	}
 
 	if data.Code != nil {
 		iksm.GenNewCookie("auth", "1.6.0", client)
-		return GetAllShifts(appHead, client, save)
+		GetAllShifts(appHead, client)
 	}
 
-	if save {
-		for i := range data.Results {
-			fileText, err := json.MarshalIndent(data.Results[i], "", " ")
+	for i := range data.Results {
+		fileText, err := json.MarshalIndent(data.Results[i], "", " ")
+		if err != nil {
+			log.Panicln(err)
+		}
+
+		if _, err := os.Stat("shifts"); errors.Is(err, os.ErrNotExist) {
+			err := os.Mkdir("shifts", os.ModePerm)
 			if err != nil {
-				log.Panicln(err)
-			}
-
-			if _, err := os.Stat("shifts"); errors.Is(err, os.ErrNotExist) {
-				err := os.Mkdir("shifts", os.ModePerm)
-				if err != nil {
-					log.Println(err)
-				}
-			}
-
-			if err := ioutil.WriteFile(fmt.Sprintf("shifts/%d.json", data.Results[i].JobId), fileText, 0600); err != nil {
-				log.Panicln(err)
+				log.Println(err)
 			}
 		}
-	}
 
-	return data
+		if err := ioutil.WriteFile(fmt.Sprintf("shifts/%d.json", data.Results[i].JobId), fileText, 0600); err != nil {
+			log.Panicln(err)
+		}
+	}
+	return
 }
 
 func LoadFromFile() []ShiftSplatnet {
@@ -119,4 +117,26 @@ func LoadFromFile() []ShiftSplatnet {
 		}(files[i]))
 	}
 	return data
+}
+
+func LoadFromFileIterator() lib.ShiftIterator {
+	f, err := os.Open("shifts")
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return nil
+		}
+		log.Panicln(err)
+	}
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+			log.Panicln(err)
+		}
+	}(f)
+	returnVal := ShiftSplatnetIterator{}
+	returnVal.files, err = f.Readdirnames(-1)
+	if err != nil {
+		log.Panicln(err)
+	}
+	return &returnVal
 }
