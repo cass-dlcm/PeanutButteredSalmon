@@ -8,7 +8,7 @@ Peanut Buttered Salmon is a program that downloads data from the SplatNet 2 app 
 If running using a Go install
 
 ```Shell
-$ go run main.go [-stage ""] [-event ""] [-tide ""] [-weapon ""] [-save] [-load] [-splatnet] [-statink ""] [-salmonstats ""]
+$ go run v2/main.go [-stage ""] [-event ""] [-tide ""] [-weapon ""] [-save] [-load] [-splatnet] [-statink ""] [-salmonstats ""]
 ```
 
 If running a binary
