@@ -35,13 +35,11 @@ The `-statink` flag signals to download data from a stat.ink instance. Use `-sta
 
 The `-salmonstats` flag downloads data from a salmon-stats instance. Use `-salmonstats "official"` to use the https://salmon-stats-api.yuki.games instance.
 
-<!--The `-monitor` flag runs the script in monitoring mode, finding new personal bests as you play shifts. The script checks for new shifts every `N` seconds.-->
-
 ### Example usage
 
-Running `go run main.go -save -splatnet -monitor 900` from the command line launches the program in monitoring mode, checking on Splatnet 2 for new results, saving them, and finding personal bests every 15 minute.
+Running `go run main.go -save -splatnet` from the command line launches the program to check on Splatnet 2 for new results, save them, and finding personal bests.
 
-Running `go run main.go --statink` finds all personal bests from your data on stat.ink
+Running `go run main.go --statink "official"` finds all personal bests from your data on stat.ink
 
 ## Features
 
@@ -77,7 +75,8 @@ Input features:
 
 4. You will be prompted to enter your [language code](https://github.com/frozenpandaman/splatnet2statink/wiki/languages) (locale).
 
-* Running the script for the first time with the `-statink` flag will prompt you to enter your stat.ink API key, which can be found in your [profile settings](https://stat.ink/profile).
+* Running the script for the first time with the `-statink` flag will fail if you haven't set an API key. To enter your stat.ink API key, put it in the `config.json` file at the `statink_servers[0].api_key` location. The API key can be found in your [profile settings](https://stat.ink/profile).
+* Running the script for the first time with the `-salmonstats` flag will fail if you haven't set a Splatnet user ID. To enter your Splatnet user ID, put it in the `config.json` file at the `user_id` location. The Splatnet user ID can be found in a record downloaded from SplatNet, which would be in any of the `shifts/{job_number},json` files, at the `my_result.pid` location.
 * Running the script for the first time with the `-splatnet` flag will start the cookie generation.
 
 **NOTE: Read the "Cookie generation" section below before proceeding. [→](#cookie-generation)**
