@@ -461,7 +461,7 @@ func getSplatoonAccessToken(splatoonToken splatoonTokenS, guid string, timestamp
 	flapgApp := callFlapgApi(idToken, guid, timestamp, "app", version, client).Result
 	bodyJson, err := json.Marshal(map[string]map[string]interface{}{
 		"parameter": {
-			"id":                5741031244955648,
+			"id":                int64(5741031244955648),
 			"f":                 flapgApp.F,
 			"registrationToken": flapgApp.P1,
 			"timestamp":         flapgApp.P2,
