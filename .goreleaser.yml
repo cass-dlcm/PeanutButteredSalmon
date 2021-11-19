@@ -43,3 +43,6 @@ announce:
     # Whether its enabled or not.
     # Defaults to false.
     enabled: true
+signs:
+  - artifacts: checksum
+    args: ["-u", "cassandra.delacruzmunoz@gmail.com", "--output", "${signature}", "--detach-sign", "${artifact}"]
