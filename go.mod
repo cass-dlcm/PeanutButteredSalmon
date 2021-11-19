@@ -3,7 +3,6 @@ module github.com/cass-dlcm/PeanutButteredSalmon
 go 1.17
 
 require (
-	github.com/cass-dlcm/PeanutButteredSalmon/v2 v2.0.0-00010101000000-000000000000
 	github.com/frankenbeanies/uuid4 v0.0.0-20180313125435-68b799ec299a
 	github.com/spf13/viper v1.9.0
 )
@@ -24,5 +23,3 @@ require (
 	gopkg.in/ini.v1 v1.64.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
-
-replace github.com/cass-dlcm/PeanutButteredSalmon/v2 => ./v2

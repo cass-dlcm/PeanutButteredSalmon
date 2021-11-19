@@ -3,8 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/cass-dlcm/PeanutButteredSalmon/lib"
-	"github.com/cass-dlcm/PeanutButteredSalmon/types"
+	"github.com/cass-dlcm/PeanutButteredSalmon/v2/lib"
+	"github.com/cass-dlcm/PeanutButteredSalmon/v2/salmonstats"
+	"github.com/cass-dlcm/PeanutButteredSalmon/v2/splatnet"
+	"github.com/cass-dlcm/PeanutButteredSalmon/v2/statink"
+	"github.com/cass-dlcm/PeanutButteredSalmon/v2/types"
 	"github.com/spf13/viper"
 	"log"
 	"net/http"
@@ -51,13 +54,11 @@ func setLanguage() {
 	}
 }
 
-func getFlags() ([]types.Stage, []types.Event, []types.Tide, []types.WeaponSchedule, bool, bool, []types.Server, bool, []types.Server, int) {
+func getFlags() ([]types.Stage, []types.Event, []types.Tide, []types.WeaponSchedule, []types.Server, bool, []types.Server, int) {
 	stagesStr := flag.String("stage", "spawning_grounds marooners_bay lost_outpost salmonid_smokeyard ruins_of_ark_polaris", "To set a specific set of stages.")
 	hasEventsStr := flag.String("event", "water_levels rush fog goldie_seeking griller cohock_charge mothership", "To set a specific set of events.")
 	hasTides := flag.String("tide", "LT NT HT", "To set a specific set of tides.")
 	hasWeapons := flag.String("weapon", "set single_random four_random random_gold", "To restrict to a specific set of weapon types.")
-	save := flag.Bool("save", false, "To save data to json files.")
-	load := flag.Bool("load", false, "To load data from json files.")
 	statInk := flag.String("statink", "", "To read data from stat.ink. Use \"official\" for the server at stat.ink.")
 	useSplatnet := flag.Bool("splatnet", false, "To read data from splatnet.")
 	salmonStats := flag.String("salmonstats", "", "To read data from salmon-stats. Use \"official\" for the server at salmon-stats-api.yuki.games")
@@ -87,7 +88,6 @@ func getFlags() ([]types.Stage, []types.Event, []types.Tide, []types.WeaponSched
 	if err := viper.UnmarshalKey("statink_servers", &statInkUrlConf); err != nil {
 		log.Panicln(err)
 	}
-	log.Println(statInkUrlConf)
 	statInkServers := []types.Server{}
 	for i := range statInkUrlNicks {
 		for j := range statInkUrlConf {
@@ -102,7 +102,6 @@ func getFlags() ([]types.Stage, []types.Event, []types.Tide, []types.WeaponSched
 	if err := viper.UnmarshalKey("salmonstats_servers", &salmonStatsUrlConf); err != nil {
 		log.Panicln(err)
 	}
-	log.Println(salmonStatsUrlConf)
 	salmonStatsServers := []types.Server{}
 	for i := range salmonStatsUrlNicks {
 		for j := range salmonStatsUrlConf {
@@ -112,7 +111,7 @@ func getFlags() ([]types.Stage, []types.Event, []types.Tide, []types.WeaponSched
 		}
 	}
 
-	return stages, hasEvents, tides, weapons, *save, *load, statInkServers, *useSplatnet, salmonStatsServers, *m
+	return stages, hasEvents, tides, weapons, statInkServers, *useSplatnet, salmonStatsServers, *m
 }
 
 func main() {
@@ -134,7 +133,7 @@ func main() {
 			}})
 			viper.Set("salmonstats_servers", []types.Server{{
 				ShortName: "official",
-				Address: "https://salmon-stats-api.yuki.games/api/",
+				Address:   "https://salmon-stats-api.yuki.games/api/",
 			}})
 			if err := viper.WriteConfigAs("./config.json"); err != nil {
 				panic(err)
@@ -156,7 +155,7 @@ func main() {
 	}})
 	viper.SetDefault("salmonstats_servers", []types.Server{{
 		ShortName: "official",
-		Address: "https://salmon-stats-api.yuki.games/api/",
+		Address:   "https://salmon-stats-api.yuki.games/api/",
 	}})
 	client := &http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
@@ -167,7 +166,7 @@ func main() {
 	if !(viper.IsSet("user_lang")) || viper.GetString("user_lang") == "" {
 		setLanguage()
 	}
-	stages, hasEvents, tides, weapons, save, load, statInkServers, useSplatnet, salmonStatsServers, _ := getFlags()
+	stages, hasEvents, tides, weapons, statInkServers, _, salmonStatsServers, _ := getFlags()
 	_, timezone := time.Now().Zone()
 	timezone = -timezone / 60
 	appHead := http.Header{
@@ -181,5 +180,19 @@ func main() {
 		"Accept-Encoding":   []string{"gzip deflate"},
 		"Accept-Language":   []string{viper.GetString("user_lang")},
 	}
-	lib.FindRecords(useSplatnet, load, statInkServers, salmonStatsServers, stages, hasEvents, tides, weapons, save, appHead, client)
+	iterators := []lib.ShiftIterator{}
+	for i := range salmonStatsServers {
+		err := salmonstats.GetAllShifts(salmonStatsServers[i], client)
+		if err != nil {
+			return
+		}
+		iterators = append(iterators, salmonstats.LoadFromFileIterator(salmonStatsServers[i]))
+	}
+	for i := range statInkServers {
+		statink.GetAllShifts(statInkServers[i], client)
+		iterators = append(iterators, statink.LoadFromFileIterator(salmonStatsServers[i]))
+	}
+	splatnet.GetAllShifts(appHead, client)
+	iterators = append(iterators, splatnet.LoadFromFileIterator())
+	lib.FindRecords(iterators, stages, hasEvents, tides, weapons, client)
 }
