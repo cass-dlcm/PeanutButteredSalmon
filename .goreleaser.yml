@@ -11,7 +11,6 @@ builds:
       - linux
       - windows
       - darwin
-    main: main
 archives:
   - replacements:
       darwin: Darwin
@@ -36,14 +35,6 @@ gomod:
   #
   # Default is false.
   proxy: true
-  # If proxy is true, use these environment variables when running `go mod` commands (namely, `go mod tidy`).
-  # Defaults to `os.Environ()`.
-  env:
-    - GOPROXY=https://proxy.golang.org,direct
-    - GOSUMDB=sum.golang.org
-  # Which Go binary to use.
-  # Defaults to `go`.
-  gobinary: go
 signs:
   - artifacts: checksum
 source:
