@@ -38,3 +38,8 @@ gomod:
   #
   # Default is false.
   proxy: true
+announce:
+  twitter:
+    # Whether its enabled or not.
+    # Defaults to false.
+    enabled: true
