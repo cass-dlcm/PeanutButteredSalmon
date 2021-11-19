@@ -11,7 +11,7 @@ builds:
       - linux
       - windows
       - darwin
-    main: github.com/cass-dlcm/PeanutButteredSalmon
+    main: main
 archives:
   - replacements:
       darwin: Darwin
