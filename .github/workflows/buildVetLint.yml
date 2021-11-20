@@ -16,14 +16,12 @@ jobs:
 
       - name: Install dependencies
         run: |
+          cd v3
           go mod tidy
           go get -u golang.org/x/lint/golint
 
       - name: Build
-        run: go build v3
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+        run: go build .
 
       - name: Run Vet & Lint
         run: |
