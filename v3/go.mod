@@ -3,7 +3,6 @@ module github.com/cass-dlcm/PeanutButteredSalmon/v3
 go 1.17
 
 require (
-	github.com/cass-dlcm/PeanutButteredSalmon/v2 v2.0.1
 	github.com/frankenbeanies/uuid4 v0.0.0-20180313125435-68b799ec299a
 	github.com/spf13/viper v1.9.0
 )
