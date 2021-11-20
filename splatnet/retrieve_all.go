@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/cass-dlcm/PeanutButteredSalmon/splatnet/iksm"
+	"github.com/cass-dlcm/peanutbutteredsalmon/splatnet/iksm"
 	"github.com/spf13/viper"
 	"io/ioutil"
 	"log"

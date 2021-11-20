@@ -47,7 +47,7 @@ func (v *version) ToString() string {
 }
 
 func CheckForUpdate(client *http.Client) (errs []error) {
-	url := fmt.Sprintf("https://raw.githubusercontent.com/cass-dlcm/PeanutButteredSalmon/main/v%d/types/version.go", Version.Major + 1)
+	url := fmt.Sprintf("https://raw.githubusercontent.com/cass-dlcm/peanutbutteredsalmon/main/v%d/types/version.go", Version.Major + 1)
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
@@ -66,7 +66,7 @@ func CheckForUpdate(client *http.Client) (errs []error) {
 		}
 	}()
 	if resp.StatusCode == 404 {
-		url := fmt.Sprintf("https://raw.githubusercontent.com/cass-dlcm/PeanutButteredSalmon/main/v%d/types/version.go", Version.Major)
+		url := fmt.Sprintf("https://raw.githubusercontent.com/cass-dlcm/peanutbutteredsalmon/main/v%d/types/version.go", Version.Major)
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 		req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
@@ -85,7 +85,7 @@ func CheckForUpdate(client *http.Client) (errs []error) {
 			}
 		}()
 		if resp.StatusCode == 404 {
-			url := fmt.Sprintf("https://raw.githubusercontent.com/cass-dlcm/PeanutButteredSalmon/main/v%d/types/version.go", Version.Major - 1)
+			url := fmt.Sprintf("https://raw.githubusercontent.com/cass-dlcm/peanutbutteredsalmon/main/v%d/types/version.go", Version.Major - 1)
 			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 			defer cancel()
 			req, err := http.NewRequestWithContext(ctx, "GET", url, nil)

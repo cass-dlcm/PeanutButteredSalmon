@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/cass-dlcm/PeanutButteredSalmon/lib"
-	"github.com/cass-dlcm/PeanutButteredSalmon/types"
+	"github.com/cass-dlcm/peanutbutteredsalmon/lib"
+	"github.com/cass-dlcm/peanutbutteredsalmon/types"
 	"github.com/spf13/viper"
 	"log"
 	"net/http"

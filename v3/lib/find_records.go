@@ -2,8 +2,8 @@ package lib
 
 import (
 	"fmt"
-	"github.com/cass-dlcm/PeanutButteredSalmon/v3/schedules"
-	"github.com/cass-dlcm/PeanutButteredSalmon/v3/types"
+	"github.com/cass-dlcm/peanutbutteredsalmon/v3/schedules"
+	"github.com/cass-dlcm/peanutbutteredsalmon/v3/types"
 	"log"
 	"net/http"
 )

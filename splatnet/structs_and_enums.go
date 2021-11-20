@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-import "github.com/cass-dlcm/PeanutButteredSalmon/types"
+import "github.com/cass-dlcm/peanutbutteredsalmon/types"
 
 type ShiftList struct {
 	Code    *string `json:"code"`

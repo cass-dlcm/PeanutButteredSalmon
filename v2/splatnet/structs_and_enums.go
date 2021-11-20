@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/cass-dlcm/PeanutButteredSalmon/v2/lib"
+	"github.com/cass-dlcm/peanutbutteredsalmon/v2/lib"
 	"log"
 	"os"
 )
 
-import "github.com/cass-dlcm/PeanutButteredSalmon/v2/types"
+import "github.com/cass-dlcm/peanutbutteredsalmon/v2/types"
 
 type ShiftList struct {
 	Code    *string `json:"code"`

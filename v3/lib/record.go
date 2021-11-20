@@ -1,8 +1,8 @@
 package lib
 
 import (
-	"github.com/cass-dlcm/PeanutButteredSalmon/v3/schedules"
-	"github.com/cass-dlcm/PeanutButteredSalmon/v3/types"
+	"github.com/cass-dlcm/peanutbutteredsalmon/v3/schedules"
+	"github.com/cass-dlcm/peanutbutteredsalmon/v3/types"
 	"time"
 )
 

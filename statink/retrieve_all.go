@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/cass-dlcm/PeanutButteredSalmon/types"
+	"github.com/cass-dlcm/peanutbutteredsalmon/types"
 	"io/ioutil"
 	"log"
 	"net/http"

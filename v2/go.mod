@@ -1,4 +1,4 @@
-module github.com/cass-dlcm/PeanutButteredSalmon/v2
+module github.com/cass-dlcm/peanutbutteredsalmon/v2
 
 go 1.17
 

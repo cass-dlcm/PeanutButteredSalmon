@@ -1,6 +1,9 @@
 Peanut Buttered Salmon
 ================
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/cass-dlcm/peanutbutteredsalmon.svg)](https://pkg.go.dev/github.com/cass-dlcm/peanutbutteredsalmon)
+[![Go Report Card](https://goreportcard.com/badge/github.com/cass-dlcm/peanutbutteredsalmon)](https://goreportcard.com/report/github.com/cass-dlcm/peanutbutteredsalmon)
+
 Peanut Buttered Salmon is a program that downloads data from the SplatNet 2 app ("Nintendo Switch Online") or stat.ink to find personal bests in the *Splatoon 2* Salmon Run game mode.
 
 ## Usage
@@ -65,13 +68,13 @@ Input features:
 
 ## Setup instructions
 
-*These instructions are meant to be accessible and easy-to-follow for all users, and this is the recommended way to run the script. If you run into trouble, please reach out! However, an alternative [simple version](https://github.com/cass-dlcm/PeanutButteredSalmon/wiki/simple-setup-instructions) is also available.*
+*These instructions are meant to be accessible and easy-to-follow for all users, and this is the recommended way to run the script. If you run into trouble, please reach out! However, an alternative [simple version](https://github.com/cass-dlcm/peanutbutteredsalmon/wiki/simple-setup-instructions) is also available.*
 
 1. Download and install Go. On Windows, download the installer from the [official website](https://www.golang.org/dl/). On macOS, install [Homebrew](https://brew.sh/) and then run `brew install go`.
 
 2. If you're on Windows, install [Git](https://git-scm.com/download) (pre-installed on macOS).
 
-3. Download the program from the command line (macOS: Terminal; Windows: Command Prompt/PowerShell) by running `git clone https://github.com/cass-dlcm/PeanutButteredSalmon.git`.
+3. Download the program from the command line (macOS: Terminal; Windows: Command Prompt/PowerShell) by running `git clone https://github.com/cass-dlcm/peanutbutteredsalmon.git`.
 
 4. You will be prompted to enter your [language code](https://github.com/frozenpandaman/splatnet2statink/wiki/languages) (locale).
 
@@ -85,7 +88,7 @@ You will then be asked to navigate to a specific URL on Nintendo.com, log in, an
 
 This cookie (used to access your SplatNet battle results) along with your stat.ink API key and language will automatically be saved into `config.txt` for you. You're now ready to upload battles!
 
-Have any questions, issues, or suggestions? Feel free to message me on [Twitter](https://twitter.com/cass-dlcm) or create an [issue](https://github.com/cass-dlcm/PeanutButteredSalmon/issues) here.
+Have any questions, issues, or suggestions? Feel free to message me on [Twitter](https://twitter.com/cass-dlcm) or create an [issue](https://github.com/cass-dlcm/peanutbutteredsalmon/issues) here.
 
 ### Accessing SplatNet 2 from your browser
 

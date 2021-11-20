@@ -119,7 +119,7 @@ func getHashFromS2sApi(idToken string, timestamp int, version string, client *ht
 	req.Header = http.Header{
 		"Content-Type":   []string{"application/x-www-form-urlencoded"},
 		"Content-Length": []string{strconv.Itoa(len(reqData.Encode()))},
-		"User-Agent":     []string{"PeanutButteredSalmon/" + version},
+		"User-Agent":     []string{"peanutbutteredsalmon/" + version},
 	}
 
 	resp, err := client.Do(req)
