@@ -2,7 +2,6 @@ Peanut Buttered Salmon
 ================
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/cass-dlcm/peanutbutteredsalmon.svg)](https://pkg.go.dev/github.com/cass-dlcm/peanutbutteredsalmon)
-[![Go Report Card](https://goreportcard.com/badge/github.com/cass-dlcm/peanutbutteredsalmon)](https://goreportcard.com/report/github.com/cass-dlcm/peanutbutteredsalmon)
 
 Peanut Buttered Salmon is a program that downloads data from the SplatNet 2 app ("Nintendo Switch Online") or stat.ink to find personal bests in the *Splatoon 2* Salmon Run game mode.
 
