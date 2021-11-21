@@ -13,6 +13,17 @@ import (
 	"time"
 )
 
+// GetAllShifts downloads every shiftStatInk from the provided stat.ink server.
+// It returns an array of the downloaded shifts.
+// It has the option of saving the shifts to individual JSON files.
+//
+// Warning:
+//  • Panics on error.
+//
+// Breaking changes v1->v2:
+//  • Automatically saves all the files. (no `save bool` param).
+//  • Downloads from where it stopped last time by looking at the files. (no `id int` param).
+//  • Returns an error instead of []ShiftStatInk.
 func GetAllShifts(id int, statInkServer types.Server, client *http.Client, save bool) []ShiftStatInk {
 	var data []ShiftStatInk
 	getShift := func(id int) []ShiftStatInk {
@@ -81,6 +92,10 @@ func GetAllShifts(id int, statInkServer types.Server, client *http.Client, save 
 	return nil
 }
 
+// LoadFromFile reads all the files in at once and loads them into a slice of shifts.
+//
+// Warning:
+//  • Panics on error.
 func LoadFromFile(statInkServer types.Server) []ShiftStatInk {
 	f, err := os.Open(fmt.Sprintf("statink_shifts/%s", statInkServer.ShortName))
 	if err != nil {
@@ -92,7 +107,7 @@ func LoadFromFile(statInkServer types.Server) []ShiftStatInk {
 	defer func(f *os.File) {
 		err := f.Close()
 		if err != nil {
-
+			log.Panicln(err)
 		}
 	}(f)
 	files, err := f.Readdirnames(-1)

@@ -5,36 +5,32 @@ import (
 	"strings"
 )
 
+// Tide is a string enum for denoting the water level of the wave.
 type Tide string
 
+// The three tides.
 const (
 	Ht Tide = "HT"
 	Nt Tide = "NT"
 	Lt Tide = "LT"
 )
 
+// GetTideArgs turns a string of space seperated Tide strings into a slice of Tide.
 func GetTideArgs(tideStr string) ([]Tide, error) {
 	tides := []Tide{}
-	eventsStrArr := strings.Split(tideStr, " ")
-	for i := range eventsStrArr {
-		tideVal, err := stringToTide(eventsStrArr[i])
-		if err != nil {
-			return nil, err
+	tidesStrArr := strings.Split(tideStr, " ")
+	for i := range tidesStrArr {
+		switch tidesStrArr[i] {
+		case "HT", "NT", "LT":
+			tides = append(tides, Tide(tidesStrArr[i]))
+		default:
+			return nil, fmt.Errorf("tide not found: %s", tidesStrArr[i])
 		}
-		tides = append(tides, *tideVal)
 	}
 	return tides, nil
 }
 
-func stringToTide(in string) (*Tide, error) {
-	inTide := Tide(in)
-	switch in {
-	case "HT", "NT", "LT":
-		return &inTide, nil
-	}
-	return nil, fmt.Errorf("tide not found: %s", in)
-}
-
+// GetAllTides returns a slice containing every Tide constant.
 func GetAllTides() []Tide {
 	return []Tide{
 		Ht,
@@ -43,8 +39,10 @@ func GetAllTides() []Tide {
 	}
 }
 
+// TideArr is a wrapper around a Tide slice for the purpose of using the IsAllElementExist function.
 type TideArr []Tide
 
+// IsAllElementExist finds whether the given Tide slice contains every element in the TideArr.
 func (t *TideArr) IsAllElementExist(arr []Tide) bool {
 	for _, i := range *t {
 		found := false

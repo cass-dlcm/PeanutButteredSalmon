@@ -5,8 +5,10 @@ import (
 	"strings"
 )
 
+// Event is an integer enum for denoting the event of a wave.
 type Event int
 
+// The seven Salmon Run events.
 const (
 	WaterLevels Event = iota
 	Rush
@@ -17,6 +19,7 @@ const (
 	Mothership
 )
 
+// ToString returns the name of the Event, currently hardcoded as the en-US locale.
 func (e Event) ToString() string {
 	switch e {
 	case WaterLevels:
@@ -37,6 +40,7 @@ func (e Event) ToString() string {
 	return ""
 }
 
+// StringToEvent returns a pointer to an Event if the Event matches the inputted string, otherwise it returns an error.
 func StringToEvent(eventStr string) (*Event, error) {
 	var eventRes Event
 	switch eventStr {
@@ -60,6 +64,7 @@ func StringToEvent(eventStr string) (*Event, error) {
 	return &eventRes, nil
 }
 
+// GetEventArgs turns a string of space seperated string representations of events into a slice of Event.
 func GetEventArgs(eventStr string) ([]Event, error) {
 	events := []Event{}
 	eventsStrArr := strings.Split(eventStr, " ")
@@ -73,6 +78,7 @@ func GetEventArgs(eventStr string) ([]Event, error) {
 	return events, nil
 }
 
+// GetAllEvents returns a slice containing every Event constant.
 func GetAllEvents() []Event {
 	return []Event{
 		WaterLevels,
@@ -85,8 +91,10 @@ func GetAllEvents() []Event {
 	}
 }
 
+// EventArr is a wrapper around an Event slice for the purpose of using the IsAllElementExist function.
 type EventArr []Event
 
+// IsAllElementExist finds whether the given Event slice contains every element in the EventArr.
 func (e *EventArr) IsAllElementExist(arr []Event) bool {
 	for _, i := range *e {
 		found := false

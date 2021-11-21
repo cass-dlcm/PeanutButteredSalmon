@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// ShiftPage is the payload as downloaded from SplatNet, containing all the shifts plus some additional data.
 type ShiftPage struct {
 	CurrentPage  int    `json:"current_page"`
 	FirstPageURL string `json:"first_page_url"`
@@ -28,6 +29,7 @@ type ShiftPage struct {
 	Results     []ShiftSalmonStats `json:"results"`
 }
 
+// Bosses is used in the ShiftSalmonStats struct but has no methods of its own.
 type Bosses struct {
 	Num3  int `json:"3"`
 	Num6  int `json:"6"`
@@ -40,6 +42,8 @@ type Bosses struct {
 	Num21 int `json:"21"`
 }
 
+// ShiftSalmonStats is the data of a single shift from a salmon-stats/api instance.
+// It implements the lib.Shift interface.
 type ShiftSalmonStats struct {
 	ID                         int    `json:"id"`
 	ScheduleID                 string `json:"schedule_id"`
@@ -89,10 +93,14 @@ type ShiftSalmonStats struct {
 	} `json:"waves"`
 }
 
+// GetTotalEggs implements lib.Shift{}.GetTotalEggs() int.
+// This function returns the total eggs obtained in the shift.
 func (s ShiftSalmonStats) GetTotalEggs() int {
 	return s.GoldenEggDelivered
 }
 
+// GetStage implements lib.Shift{}.GetStage(schedules.Schedule) types.Stage.
+// This function returns which stage the shift was played on.
 func (s ShiftSalmonStats) GetStage(schedule schedules.Schedule) types.Stage {
 	scheduleTime, err := time.Parse("2006-01-02 15:04:05", s.ScheduleID)
 	if err != nil {
@@ -117,6 +125,8 @@ func (s ShiftSalmonStats) GetStage(schedule schedules.Schedule) types.Stage {
 	return -1
 }
 
+// GetWeaponSet implements lib.Shift{}.GetWeaponSet(schedules.Schedule) types.WeaponSchedule.
+// This function returns what kind of weapon set was used in the shift.
 func (s ShiftSalmonStats) GetWeaponSet(weaponSets schedules.Schedule) types.WeaponSchedule {
 	scheduleTime, err := time.Parse("2006-01-02 15:04:05", s.ScheduleID)
 	if err != nil {
@@ -141,6 +151,8 @@ func (s ShiftSalmonStats) GetWeaponSet(weaponSets schedules.Schedule) types.Weap
 	return ""
 }
 
+// GetEvents implements lib.Shift{}.GetEvents() types.EventArr.
+// This function returns a named type of slice of types.Event consisting of the events played in each wave of the shift.
 func (s ShiftSalmonStats) GetEvents() types.EventArr {
 	events := types.EventArr{}
 	for i := range s.Waves {
@@ -164,6 +176,8 @@ func (s ShiftSalmonStats) GetEvents() types.EventArr {
 	return events
 }
 
+// GetTides implements lib.Shift{}.GetTides() types.TideArr.
+// This function returns a named type of slice of types.Tide consisting of the tides played in each wave of the shift.
 func (s ShiftSalmonStats) GetTides() types.TideArr {
 	tides := types.TideArr{}
 	for i := range s.Waves {
@@ -179,6 +193,8 @@ func (s ShiftSalmonStats) GetTides() types.TideArr {
 	return tides
 }
 
+// GetEggsWaves implements lib.Shift{}.GetEggsWaves() []int.
+// This function returns a slice of integers consisting of the amount of golden eggs delivered each wave.
 func (s ShiftSalmonStats) GetEggsWaves() []int {
 	eggs := []int{}
 	for i := range s.Waves {
@@ -187,10 +203,14 @@ func (s ShiftSalmonStats) GetEggsWaves() []int {
 	return eggs
 }
 
+// GetWaveCount implements lib.Shift{}.GetWaveCount() int.
+// This function returns the number of waves in the shift.
 func (s ShiftSalmonStats) GetWaveCount() int {
 	return len(s.Waves)
 }
 
+// GetTime implements lib.Shift{}.GetTime() time.Time
+// This function returns the time at which the shift started.
 func (s ShiftSalmonStats) GetTime() time.Time {
 	startTime, err := time.Parse("2006-01-02 15:04:05", s.StartAt)
 	if err != nil {
@@ -199,6 +219,8 @@ func (s ShiftSalmonStats) GetTime() time.Time {
 	return startTime
 }
 
+// GetIdentifier implements lib.Shift{}.GetIdentifier() string.
+// This function returns a unique URL pointing to this exact shift on salmon-stats-api.yuki-games.
 func (s ShiftSalmonStats) GetIdentifier() string {
-	return fmt.Sprintf("https://salmon-stats-api.yuki.games/api/players/%s/results?raw=1&count=1&page=%d", s.PlayerID, s.Page)
+	return fmt.Sprintf("https://salmon-stats-api.yuki.games/api/results/%d/", s.ID)
 }

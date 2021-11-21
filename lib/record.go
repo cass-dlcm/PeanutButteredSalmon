@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+// RecordName is an enum string of the name of each record.
 type RecordName string
 
 const (
@@ -36,6 +37,7 @@ const (
 	ltCohockCharge                 RecordName = "LT Cohock Charge"
 )
 
+// Shift is a generic source of match results, with only the necessary details available, accessible as methods.
 type Shift interface {
 	GetTotalEggs() int
 	GetStage(schedules.Schedule) types.Stage
@@ -48,6 +50,7 @@ type Shift interface {
 	GetIdentifier() string
 }
 
+// Record is a set of data containing information needed to identify a record holding game.
 type Record struct {
 	Time         time.Time
 	RecordAmount int
@@ -82,16 +85,6 @@ func getRecordNames() []RecordName {
 		htMothership,
 		ltMothershp,
 		ltCohockCharge,
-	}
-}
-
-func getStageNames() []types.Stage {
-	return []types.Stage{
-		types.SalmonidSmokeyard,
-		types.RuinsOfArkPolaris,
-		types.SpawningGrounds,
-		types.MaroonersBay,
-		types.LostOutpost,
 	}
 }
 

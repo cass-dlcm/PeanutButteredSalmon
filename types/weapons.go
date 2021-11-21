@@ -5,8 +5,10 @@ import (
 	"strings"
 )
 
+// WeaponSchedule consists of an indicator as to which weapons are in the shift.
 type WeaponSchedule string
 
+// The four possibilities for weapon set types.
 const (
 	RandommGrizzco WeaponSchedule = "random_gold"
 	SingleRandom   WeaponSchedule = "single_random"
@@ -14,6 +16,7 @@ const (
 	Set            WeaponSchedule = "set"
 )
 
+// GetAllWeapons returns a slice containing every WeaponSchedule constant.
 func GetAllWeapons() []WeaponSchedule {
 	return []WeaponSchedule{
 		RandommGrizzco,
@@ -23,27 +26,22 @@ func GetAllWeapons() []WeaponSchedule {
 	}
 }
 
-func stringToWeapon(weaponStr string) (WeaponSchedule, error) {
-	switch weaponStr {
-	case string(RandommGrizzco), string(SingleRandom), string(FourRandom), string(Set):
-		return WeaponSchedule(weaponStr), nil
-	}
-	return "", fmt.Errorf("weapon not found: %s", weaponStr)
-}
-
+// GetWeaponArgs turns a string of space seperated WeaponSchedule strings into a slice of WeaponSchedule.
 func GetWeaponArgs(weaponsStr string) ([]WeaponSchedule, error) {
 	weapons := []WeaponSchedule{}
 	weaponsStrArr := strings.Split(weaponsStr, " ")
 	for i := range weaponsStrArr {
-		weaponVal, err := stringToWeapon(weaponsStrArr[i])
-		if err != nil {
-			return nil, err
+		switch weaponsStrArr[i] {
+		case string(RandommGrizzco), string(SingleRandom), string(FourRandom), string(Set):
+			weapons = append(weapons, WeaponSchedule(weaponsStrArr[i]))
+		default:
+			return nil, fmt.Errorf("weapon not found: %s", weaponsStrArr[i])
 		}
-		weapons = append(weapons, weaponVal)
 	}
 	return weapons, nil
 }
 
+// IsElementExists finds whether the given WeaponSchedule is in the WeaponSchedule slice.
 func (w *WeaponSchedule) IsElementExists(arr []WeaponSchedule) bool {
 	for _, v := range arr {
 		if v == *w {

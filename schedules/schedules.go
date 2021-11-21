@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// Schedule is a struct of all the Salmon Run rotations since the game's launch.
 type Schedule struct {
 	Result []struct {
 		Start    string    `json:"start"`
@@ -28,6 +29,7 @@ type Schedule struct {
 	} `json:"result"`
 }
 
+// GetSchedules downloads and returns a filled Schedule.
 func GetSchedules(client *http.Client) Schedule {
 	url := "https://spla2.yuu26.com/coop"
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

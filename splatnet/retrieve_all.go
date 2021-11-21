@@ -14,6 +14,14 @@ import (
 	"time"
 )
 
+// GetAllShifts downloads every shiftSplatnet from the SplatNet server and returns them all.
+//
+// Warnings:
+//  • Panics on error.
+//
+// Breaking changes:
+//  • v1->v2:
+//    • No return value.
 func GetAllShifts(appHead http.Header, client *http.Client, save bool) ShiftList {
 	if _, err := fmt.Println("Pulling Salmon Run data from online..."); err != nil {
 		panic(err)
@@ -83,6 +91,10 @@ func GetAllShifts(appHead http.Header, client *http.Client, save bool) ShiftList
 	return data
 }
 
+// LoadFromFile reads in files of individual shifts and loads them into a []ShiftSplatnet, returning it.
+//
+// Warnings:
+//  • Panics on error.
 func LoadFromFile() []ShiftSplatnet {
 	f, err := os.Open("shifts")
 	if err != nil {

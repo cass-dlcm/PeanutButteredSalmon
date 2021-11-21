@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+// ShiftStatInk is the JSON data of a single shift from the stat.ink service.
+// It implements the Shift interface.
 type ShiftStatInk struct {
 	ID             int           `json:"id"`
 	UUID           string        `json:"uuid"`
@@ -51,12 +53,14 @@ type ShiftStatInk struct {
 	RegisterAt   Time    `json:"register_at"`
 }
 
+// StatinkTriple is used in the ShiftStatInk struct but has no methods of its own.
 type StatinkTriple struct {
 	Key      string  `json:"key"`
 	Splatnet *string `json:"splatnet"`
 	Name     Name    `json:"name"`
 }
 
+// Title is used in the ShiftStatInk struct but has no methods of its own.
 type Title struct {
 	Key         string `json:"key"`
 	Splatnet    *int   `json:"splatnet"`
@@ -64,11 +68,13 @@ type Title struct {
 	GenericName Name   `json:"generic_name"`
 }
 
+// Time is used in the ShiftStatInk struct but has no methods of its own.
 type Time struct {
 	Time    int64     `json:"time"`
 	Iso8601 time.Time `json:"iso8601"`
 }
 
+// Boss is used in the ShiftStatInk struct but has no methods of its own.
 type Boss struct {
 	Key         string `json:"key"`
 	Splatnet    *int   `json:"splatnet"`
@@ -76,11 +82,13 @@ type Boss struct {
 	Name        Name   `json:"name"`
 }
 
+// BossCount is used in the ShiftStatInk struct but has no methods of its own.
 type BossCount struct {
 	Boss  Boss `json:"boss"`
 	Count int  `json:"count"`
 }
 
+// Player is used in the ShiftStatInk struct but has no methods of its own.
 type Player struct {
 	SplatnetID string `json:"splatnet_id"`
 	Name       string `json:"name"`
@@ -110,6 +118,7 @@ type Player struct {
 	BossKills []BossCount `json:"boss_kills"`
 }
 
+// Name is used in the ShiftStatInk struct but has no methods of its own.
 type Name struct {
 	DeDE string `json:"de_DE"`
 	EnGB string `json:"en_GB"`
@@ -126,6 +135,8 @@ type Name struct {
 	ZhTW string `json:"zh_TW"`
 }
 
+// GetTotalEggs implements core.Shift{}.GetTotalEggs() int.
+// This function returns the total eggs obtained in the shift.
 func (s *ShiftStatInk) GetTotalEggs() int {
 	sum := 0
 	for i := range s.Waves {
@@ -134,6 +145,8 @@ func (s *ShiftStatInk) GetTotalEggs() int {
 	return sum
 }
 
+// GetStage implements core.Shift{}.GetStage(schedules.Schedule) types.Stage.
+// This function returns which stage the shift was played on.
 func (s *ShiftStatInk) GetStage(_ schedules.Schedule) types.Stage {
 	switch s.Stage.Key {
 	case "dam":
@@ -150,6 +163,8 @@ func (s *ShiftStatInk) GetStage(_ schedules.Schedule) types.Stage {
 	return -1
 }
 
+// GetWeaponSet implements core.Shift{}.GetWeaponSet(schedules.Schedule) types.WeaponSchedule.
+// This function returns what kind of weapon set was used in the shift.
 func (s *ShiftStatInk) GetWeaponSet(weaponSets schedules.Schedule) types.WeaponSchedule {
 	for i := range weaponSets.Result {
 		if weaponSets.Result[i].StartUtc.Equal(s.ShiftStartAt.Iso8601) {
@@ -170,6 +185,8 @@ func (s *ShiftStatInk) GetWeaponSet(weaponSets schedules.Schedule) types.WeaponS
 	return ""
 }
 
+// GetEvents implements core.Shift{}.GetEvents() types.EventArr.
+// This function returns a named type of slice of types.Event consisting of the events played in each wave of the shift.
 func (s *ShiftStatInk) GetEvents() types.EventArr {
 	events := types.EventArr{}
 	for i := range s.Waves {
@@ -186,6 +203,8 @@ func (s *ShiftStatInk) GetEvents() types.EventArr {
 	return events
 }
 
+// GetTides implements core.Shift{}.GetTides() types.TideArr.
+// This function returns a named type of slice of types.Tide consisting of the tides played in each wave of the shift.
 func (s *ShiftStatInk) GetTides() types.TideArr {
 	tides := types.TideArr{}
 	for i := range s.Waves {
@@ -201,6 +220,8 @@ func (s *ShiftStatInk) GetTides() types.TideArr {
 	return tides
 }
 
+// GetEggsWaves implements core.Shift{}.GetEggsWaves() []int.
+// This function returns a slice of integers consisting of the amount of golden eggs delivered each wave.
 func (s *ShiftStatInk) GetEggsWaves() []int {
 	eggs := []int{}
 	for i := range s.Waves {
@@ -209,14 +230,20 @@ func (s *ShiftStatInk) GetEggsWaves() []int {
 	return eggs
 }
 
+// GetWaveCount implements core.Shift{}.GetWaveCount() int.
+// This function returns the number of waves in the shift.
 func (s *ShiftStatInk) GetWaveCount() int {
 	return len(s.Waves)
 }
 
+// GetTime implements core.Shift{}.GetTime() time.Time
+// This function returns the time at which the shift started.
 func (s *ShiftStatInk) GetTime() time.Time {
 	return s.StartAt.Iso8601
 }
 
+// GetIdentifier implements core.Shift{}.GetIdentifier() string.
+// This function returns a unique URL pointing to this exact shift on stat.ink.
 func (s *ShiftStatInk) GetIdentifier() string {
 	return fmt.Sprintf("https://stat.ink/api/v2/salmon/%d", s.ID)
 }

@@ -1,16 +1,18 @@
 Peanut Buttered Salmon
 ================
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/cass-dlcm/peanutbutteredsalmon.svg)](https://pkg.go.dev/github.com/cass-dlcm/peanutbutteredsalmon)
+Peanut Buttered Salmon is a program that downloads data from the SplatNet 2 app ("Nintendo Switch Online"), stat.ink, or salmon-stats to find personal bests in the *Splatoon 2* Salmon Run game mode.
 
-Peanut Buttered Salmon is a program that downloads data from the SplatNet 2 app ("Nintendo Switch Online") or stat.ink to find personal bests in the *Splatoon 2* Salmon Run game mode.
+## Depreciation Notice
+
+This version is depreciated and is no longer under active development. Please see the [v3 page](https://github.com/cass-dlcm/PeanutButteredSalmon/v3) and use that instead.
 
 ## Usage
 
 If running using a Go install
 
 ```Shell
-$ go run v2/main.go [-stage ""] [-event ""] [-tide ""] [-weapon ""] [-save] [-load] [-splatnet] [-statink ""] [-salmonstats ""]
+$ go run main.go [-stage ""] [-event ""] [-tide ""] [-weapon ""] [-save] [-load] [-splatnet] [-statink ""] [-salmonstats ""]
 ```
 
 If running a binary
@@ -37,11 +39,13 @@ The `-statink` flag signals to download data from a stat.ink instance. Use `-sta
 
 The `-salmonstats` flag downloads data from a salmon-stats instance. Use `-salmonstats "official"` to use the https://salmon-stats-api.yuki.games instance.
 
+<!--The `-monitor` flag runs the script in monitoring mode, finding new personal bests as you play shifts. The script checks for new shifts every `N` seconds.-->
+
 ### Example usage
 
-Running `go run main.go -save -splatnet` from the command line launches the program to check on Splatnet 2 for new results, save them, and finding personal bests.
+Running `go run main.go -save -splatnet -monitor 900` from the command line launches the program in monitoring mode, checking on Splatnet 2 for new results, saving them, and finding personal bests every 15 minute.
 
-Running `go run main.go --statink "official"` finds all personal bests from your data on stat.ink
+Running `go run main.go --statink` finds all personal bests from your data on stat.ink
 
 ## Features
 
@@ -67,18 +71,17 @@ Input features:
 
 ## Setup instructions
 
-*These instructions are meant to be accessible and easy-to-follow for all users, and this is the recommended way to run the script. If you run into trouble, please reach out! However, an alternative [simple version](https://github.com/cass-dlcm/peanutbutteredsalmon/wiki/simple-setup-instructions) is also available.*
+*These instructions are meant to be accessible and easy-to-follow for all users, and this is the recommended way to run the script. If you run into trouble, please reach out! However, an alternative [simple version](https://github.com/cass-dlcm/PeanutButteredSalmon/wiki/simple-setup-instructions) is also available.*
 
 1. Download and install Go. On Windows, download the installer from the [official website](https://www.golang.org/dl/). On macOS, install [Homebrew](https://brew.sh/) and then run `brew install go`.
 
 2. If you're on Windows, install [Git](https://git-scm.com/download) (pre-installed on macOS).
 
-3. Download the program from the command line (macOS: Terminal; Windows: Command Prompt/PowerShell) by running `git clone https://github.com/cass-dlcm/peanutbutteredsalmon.git`.
+3. Download the program from the command line (macOS: Terminal; Windows: Command Prompt/PowerShell) by running `git clone https://github.com/cass-dlcm/PeanutButteredSalmon.git`.
 
 4. You will be prompted to enter your [language code](https://github.com/frozenpandaman/splatnet2statink/wiki/languages) (locale).
 
-* Running the script for the first time with the `-statink` flag will fail if you haven't set an API key. To enter your stat.ink API key, put it in the `config.json` file at the `statink_servers[0].api_key` location. The API key can be found in your [profile settings](https://stat.ink/profile).
-* Running the script for the first time with the `-salmonstats` flag will fail if you haven't set a Splatnet user ID. To enter your Splatnet user ID, put it in the `config.json` file at the `user_id` location. The Splatnet user ID can be found in a record downloaded from SplatNet, which would be in any of the `shifts/{job_number},json` files, at the `my_result.pid` location.
+* Running the script for the first time with the `-statink` flag will prompt you to enter your stat.ink API key, which can be found in your [profile settings](https://stat.ink/profile).
 * Running the script for the first time with the `-splatnet` flag will start the cookie generation.
 
 **NOTE: Read the "Cookie generation" section below before proceeding. [→](#cookie-generation)**
@@ -87,7 +90,7 @@ You will then be asked to navigate to a specific URL on Nintendo.com, log in, an
 
 This cookie (used to access your SplatNet battle results) along with your stat.ink API key and language will automatically be saved into `config.txt` for you. You're now ready to upload battles!
 
-Have any questions, issues, or suggestions? Feel free to message me on [Twitter](https://twitter.com/cass-dlcm) or create an [issue](https://github.com/cass-dlcm/peanutbutteredsalmon/issues) here.
+Have any questions, issues, or suggestions? Feel free to message me on [Twitter](https://twitter.com/cass-dlcm) or create an [issue](https://github.com/cass-dlcm/PeanutButteredSalmon/issues) here.
 
 ### Accessing SplatNet 2 from your browser
 

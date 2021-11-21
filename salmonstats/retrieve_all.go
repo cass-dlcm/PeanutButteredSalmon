@@ -14,6 +14,13 @@ import (
 	"time"
 )
 
+// GetAllShifts downloads Shifts from the given salmon-stats/api instance and returns them.
+//
+// Warnings:
+//  • Panics on errors.
+//
+// Breaking changes v1->v2:
+//  • Returns error instead of []ShiftSalmonStats
 func GetAllShifts(page int, server types.Server, client *http.Client, save bool) []ShiftSalmonStats {
 	if _, err := fmt.Println("Pulling Salmon Run data from online..."); err != nil {
 		panic(err)
@@ -101,6 +108,10 @@ func GetAllShifts(page int, server types.Server, client *http.Client, save bool)
 	return nil
 }
 
+// LoadFromFile opens all Shifts from the salmon-stats/api folder for the provided instance and returns them as a slice.
+//
+// Warnings:
+//  • Panics on errors.
 func LoadFromFile(server types.Server) []ShiftSalmonStats {
 	f, err := os.Open(fmt.Sprintf("salmonstats_shifts/%s", server.ShortName))
 	if err != nil {

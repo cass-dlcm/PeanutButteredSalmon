@@ -8,6 +8,7 @@ import (
 
 import "github.com/cass-dlcm/peanutbutteredsalmon/types"
 
+// ShiftList is a struct containing a list of shifts retrieved from SplatNet
 type ShiftList struct {
 	Code    *string `json:"code"`
 	Summary struct {
@@ -72,6 +73,8 @@ type ShiftList struct {
 	Results []ShiftSplatnet `json:"results"`
 }
 
+// GetTotalEggs implements lib.Shift{}.GetTotalEggs() int.
+// This function returns the total eggs obtained in the shift.
 func (s *ShiftSplatnet) GetTotalEggs() int {
 	sum := 0
 	for i := range s.WaveDetails {
@@ -80,6 +83,8 @@ func (s *ShiftSplatnet) GetTotalEggs() int {
 	return sum
 }
 
+// ShiftSplatnet is the data of a single shift from the SplatNet service.
+// It implements the lib.Shift interface.
 type ShiftSplatnet struct {
 	JobId           int64                   `json:"job_id"`
 	DangerRate      float64                 `json:"danger_rate"`
@@ -101,12 +106,14 @@ type ShiftSplatnet struct {
 	Schedule        ShiftSplatnetSchedule   `json:"schedule"`
 }
 
+// ShiftSplatnetJobResult is used in the ShiftSplatnet struct but has no methods of its own.
 type ShiftSplatnetJobResult struct {
 	IsClear       bool                 `json:"is_clear,omitempty"`
 	FailureReason *types.FailureReason `json:"failure_reason,omitempty"`
 	FailureWave   *int                 `json:"failure_wave,omitempty"`
 }
 
+// ShiftSplatnetPlayer is used in the ShiftSplatnet struct but has no methods of its own.
 type ShiftSplatnetPlayer struct {
 	SpecialCounts  []int                           `json:"special_counts"`
 	Special        SplatnetQuad                    `json:"special"`
@@ -121,11 +128,13 @@ type ShiftSplatnetPlayer struct {
 	HelpCount      int                             `json:"help_count"`
 }
 
+// ShiftSplatnetPlayerWeaponList is used in the ShiftSplatnet struct but has no methods of its own.
 type ShiftSplatnetPlayerWeaponList struct {
 	Id     string                              `json:"id"`
 	Weapon ShiftSplatnetPlayerWeaponListWeapon `json:"weapon"`
 }
 
+// ShiftSplatnetPlayerWeaponListWeapon is used in the ShiftSplatnet struct but has no methods of its own.
 type ShiftSplatnetPlayerWeaponListWeapon struct {
 	Id        weapon `json:"id"`
 	Image     string `json:"image"`
@@ -133,6 +142,7 @@ type ShiftSplatnetPlayerWeaponListWeapon struct {
 	Thumbnail string `json:"thumbnail"`
 }
 
+// ShiftSplatnetBossCounts is used in the ShiftSplatnet struct but has no methods of its own.
 type ShiftSplatnetBossCounts struct {
 	Goldie    ShiftSplatnetBossCountsBoss `json:"3"`
 	Steelhead ShiftSplatnetBossCountsBoss `json:"6"`
@@ -145,11 +155,13 @@ type ShiftSplatnetBossCounts struct {
 	Drizzler  ShiftSplatnetBossCountsBoss `json:"21"`
 }
 
+// ShiftSplatnetBossCountsBoss is used in the ShiftSplatnet struct but has no methods of its own.
 type ShiftSplatnetBossCountsBoss struct {
 	Boss  SplatnetDouble `json:"boss"`
 	Count int            `json:"count"`
 }
 
+// ShiftSplatnetWave is used in the ShiftSplatnet struct but has no methods of its own.
 type ShiftSplatnetWave struct {
 	WaterLevel   WaterLevels `json:"water_level"`
 	EventType    eventStruct `json:"event_type"`
@@ -159,6 +171,7 @@ type ShiftSplatnetWave struct {
 	QuotaNum     int         `json:"quota_num"`
 }
 
+// ShiftSplatnetGrade is used in the ShiftSplatnet struct but has no methods of its own.
 type ShiftSplatnetGrade struct {
 	Id        string `json:"id,omitempty"`
 	ShortName string `json:"short_name,omitempty"`
@@ -166,6 +179,7 @@ type ShiftSplatnetGrade struct {
 	Name      string `json:"name,omitempty"`
 }
 
+// ShiftSplatnetSchedule is used in the ShiftSplatnet struct but has no methods of its own.
 type ShiftSplatnetSchedule struct {
 	StartTime int64                         `json:"start_time"`
 	Weapons   []ShiftSplatnetScheduleWeapon `json:"weapons"`
@@ -173,12 +187,14 @@ type ShiftSplatnetSchedule struct {
 	Stage     ShiftSplatnetScheduleStage    `json:"stage"`
 }
 
+// ShiftSplatnetScheduleWeapon is used in the ShiftSplatnet struct but has no methods of its own.
 type ShiftSplatnetScheduleWeapon struct {
 	Id                string                                    `json:"id"`
 	Weapon            *ShiftSplatnetScheduleWeaponWeapon        `json:"weapon"`
 	CoopSpecialWeapon *ShiftSplatnetScheduleWeaponSpecialWeapon `json:"coop_special_weapon"`
 }
 
+// ShiftSplatnetScheduleWeaponWeapon is used in the ShiftSplatnet struct but has no methods of its own.
 type ShiftSplatnetScheduleWeaponWeapon struct {
 	Id        string         `json:"id"`
 	Image     string         `json:"image"`
@@ -186,27 +202,32 @@ type ShiftSplatnetScheduleWeaponWeapon struct {
 	Thumbnail string         `json:"thumbnail"`
 }
 
+// ShiftSplatnetScheduleWeaponSpecialWeapon is used in the ShiftSplatnet struct but has no methods of its own.
 type ShiftSplatnetScheduleWeaponSpecialWeapon struct {
 	Image string         `json:"image"`
 	Name  weaponSchedule `json:"name"`
 }
 
+// ShiftSplatnetScheduleStage is used in the ShiftSplatnet struct but has no methods of its own.
 type ShiftSplatnetScheduleStage struct {
 	Image splatnetScheduleStageImage `json:"image"`
 	Name  stageName                  `json:"name"`
 }
 
+// SplatnetTriple is used in the ShiftSplatnet struct but has no methods of its own.
 type SplatnetTriple struct {
 	Id    string `json:"id"`
 	Image string `json:"image"`
 	Name  string `json:"name"`
 }
 
+// SplatnetDouble is used in the ShiftSplatnet struct but has no methods of its own.
 type SplatnetDouble struct {
 	Key  string `json:"key"`
 	Name string `json:"name"`
 }
 
+// WaterLevels is used in the ShiftSplatnet struct but has no methods of its own.
 type WaterLevels struct {
 	Key  tide   `json:"key"`
 	Name string `json:"name"`
@@ -217,11 +238,13 @@ type eventStruct struct {
 	Name string `json:"name"`
 }
 
+// SplatnetPlayerType is used in the ShiftSplatnet struct but has no methods of its own.
 type SplatnetPlayerType struct {
 	Gender  gender  `json:"style,omitempty"`
 	Species species `json:"species,omitempty"`
 }
 
+// SplatnetQuad is used in the ShiftSplatnet struct but has no methods of its own.
 type SplatnetQuad struct {
 	Id     string `json:"id"`
 	ImageA string `json:"image_a"`
@@ -282,42 +305,6 @@ func (ssssie *splatnetScheduleStageImage) UnmarshalJSON(b []byte) error {
 type gender string
 
 type species string
-
-func getSplatnetStage(s types.Stage) stageName {
-	switch s {
-	case types.LostOutpost:
-		return outpost
-	case types.MaroonersBay:
-		return bay
-	case types.SpawningGrounds:
-		return grounds
-	case types.SalmonidSmokeyard:
-		return smokeyard
-	case types.RuinsOfArkPolaris:
-		return polaris
-	}
-	return ""
-}
-
-func getSplatnetEvent(e types.Event) event {
-	switch e {
-	case types.Griller:
-		return griller
-	case types.Fog:
-		return fog
-	case types.CohockCharge:
-		return cohockCharge
-	case types.GoldieSeeking:
-		return goldieSeeking
-	case types.Mothership:
-		return mothership
-	case types.WaterLevels:
-		return waterLevels
-	case types.Rush:
-		return rush
-	}
-	return ""
-}
 
 func (sN *stageName) isElementExist(arr []stageName) bool {
 	for _, v := range arr {
@@ -588,6 +575,8 @@ func (swse *weaponSchedule) UnmarshalJSON(b []byte) error {
 	return errors.New("Invalid weaponSchedule. Got: " + fmt.Sprint(*swse))
 }
 
+// GetIdentifier implements lib.Shift{}.GetIdentifier() string.
+// This function returns a unique URL pointing to this exact shift on SplatNet.
 func (s *ShiftSplatnet) GetIdentifier() string {
 	return fmt.Sprintf("https://app.splatoon2.nintendo.net/api/coop_results/%d", s.JobId)
 }

@@ -82,32 +82,32 @@ func getFlags() ([]types.Stage, []types.Event, []types.Tide, []types.WeaponSched
 		panic(err)
 	}
 
-	statInkUrlNicks := strings.Split(*statInk, " ")
-	var statInkUrlConf []types.Server
-	if err := viper.UnmarshalKey("statink_servers", &statInkUrlConf); err != nil {
+	statInkURLNicks := strings.Split(*statInk, " ")
+	var statInkURLConf []types.Server
+	if err := viper.UnmarshalKey("statink_servers", &statInkURLConf); err != nil {
 		log.Panicln(err)
 	}
-	log.Println(statInkUrlConf)
+	log.Println(statInkURLConf)
 	statInkServers := []types.Server{}
-	for i := range statInkUrlNicks {
-		for j := range statInkUrlConf {
-			if statInkUrlConf[j].ShortName == statInkUrlNicks[i] {
-				statInkServers = append(statInkServers, statInkUrlConf[j])
+	for i := range statInkURLNicks {
+		for j := range statInkURLConf {
+			if statInkURLConf[j].ShortName == statInkURLNicks[i] {
+				statInkServers = append(statInkServers, statInkURLConf[j])
 			}
 		}
 	}
 
-	salmonStatsUrlNicks := strings.Split(*salmonStats, " ")
-	var salmonStatsUrlConf []types.Server
-	if err := viper.UnmarshalKey("salmonstats_servers", &salmonStatsUrlConf); err != nil {
+	salmonStatsURLNicks := strings.Split(*salmonStats, " ")
+	var salmonStatsURLConf []types.Server
+	if err := viper.UnmarshalKey("salmonstats_servers", &salmonStatsURLConf); err != nil {
 		log.Panicln(err)
 	}
-	log.Println(salmonStatsUrlConf)
+	log.Println(salmonStatsURLConf)
 	salmonStatsServers := []types.Server{}
-	for i := range salmonStatsUrlNicks {
-		for j := range salmonStatsUrlConf {
-			if salmonStatsUrlConf[j].ShortName == salmonStatsUrlNicks[i] {
-				salmonStatsServers = append(salmonStatsServers, salmonStatsUrlConf[j])
+	for i := range salmonStatsURLNicks {
+		for j := range salmonStatsURLConf {
+			if salmonStatsURLConf[j].ShortName == salmonStatsURLNicks[i] {
+				salmonStatsServers = append(salmonStatsServers, salmonStatsURLConf[j])
 			}
 		}
 	}
@@ -134,7 +134,7 @@ func main() {
 			}})
 			viper.Set("salmonstats_servers", []types.Server{{
 				ShortName: "official",
-				Address: "https://salmon-stats-api.yuki.games/api/",
+				Address:   "https://salmon-stats-api.yuki.games/api/",
 			}})
 			if err := viper.WriteConfigAs("./config.json"); err != nil {
 				panic(err)
@@ -156,7 +156,7 @@ func main() {
 	}})
 	viper.SetDefault("salmonstats_servers", []types.Server{{
 		ShortName: "official",
-		Address: "https://salmon-stats-api.yuki.games/api/",
+		Address:   "https://salmon-stats-api.yuki.games/api/",
 	}})
 	client := &http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {

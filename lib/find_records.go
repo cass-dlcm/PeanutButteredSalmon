@@ -54,6 +54,13 @@ func filterWeapons(weapons []types.WeaponSchedule, data []Shift, schedules sched
 	return filteredData
 }
 
+// FindRecords retrieves the shift data from the various sources based on the parameters, and finds records based on the set filters.
+//
+// Warnings:
+//  • Calls functions that panic on errors.
+//
+// Breaking changes v1->v2:
+//    • takes in iterators instead of retrieving the data itself
 func FindRecords(useSplatnet, load bool, statInkServers, salmonStats []types.Server, stages []types.Stage, hasEvents []types.Event, tides []types.Tide, weapons []types.WeaponSchedule, save bool, appHead http.Header, client *http.Client) {
 	data := []Shift{}
 	if useSplatnet {
@@ -223,9 +230,9 @@ func FindRecords(useSplatnet, load bool, statInkServers, salmonStats []types.Ser
 				if (*(*records[recordNames[i]])[stages[j]])[weapons[k]] == nil {
 					continue
 				}
-				countsStages[recordNames[i]][stages[j]] += 1
+				countsStages[recordNames[i]][stages[j]]++
 			}
-			countsRecords[recordNames[i]] += 1
+			countsRecords[recordNames[i]]++
 		}
 	}
 	fmt.Println("{")

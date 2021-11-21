@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+// GetWeaponSet implements lib.Shift{}.GetWeaponSet(schedules.Schedule) types.WeaponSchedule.
+// This function returns what kind of weapon set was used in the shift.
 func (s *ShiftSplatnet) GetWeaponSet(_ schedules.Schedule) types.WeaponSchedule {
 	if s.Schedule.Weapons[0].CoopSpecialWeapon != nil &&
 		s.Schedule.Weapons[1].CoopSpecialWeapon != nil &&
@@ -43,6 +45,8 @@ func (s *ShiftSplatnet) GetWeaponSet(_ schedules.Schedule) types.WeaponSchedule 
 	return ""
 }
 
+// GetEvents implements lib.Shift{}.GetEvents() types.EventArr.
+// This function returns a named type of slice of types.Event consisting of the events played in each wave of the shift.
 func (s *ShiftSplatnet) GetEvents() types.EventArr {
 	events := types.EventArr{}
 	for i := range s.WaveDetails {
@@ -51,6 +55,8 @@ func (s *ShiftSplatnet) GetEvents() types.EventArr {
 	return events
 }
 
+// ScheduleInfo is the structure of a schedule retrieved from SplatNet.
+// This isn't used anywhere in the library.
 type ScheduleInfo struct {
 	Schedules []struct {
 		StartTime int `json:"start_time"`
@@ -75,6 +81,8 @@ type ScheduleInfo struct {
 	} `json:"details"`
 }
 
+// GetStage implements lib.Shift{}.GetStage(schedules.Schedule) types.Stage.
+// This function returns which stage the shift was played on.
 func (s *ShiftSplatnet) GetStage(_ schedules.Schedule) types.Stage {
 	switch s.Schedule.Stage.Name {
 	case polaris:
@@ -91,6 +99,8 @@ func (s *ShiftSplatnet) GetStage(_ schedules.Schedule) types.Stage {
 	return -1
 }
 
+// GetTides implements lib.Shift{}.GetTides() types.TideArr.
+// This function returns a named type of slice of types.Tide consisting of the tides played in each wave of the shift.
 func (s *ShiftSplatnet) GetTides() types.TideArr {
 	tides := types.TideArr{}
 	for i := range s.WaveDetails {
@@ -99,6 +109,8 @@ func (s *ShiftSplatnet) GetTides() types.TideArr {
 	return tides
 }
 
+// GetEggsWaves implements lib.Shift{}.GetEggsWaves() []int.
+// This function returns a slice of integers consisting of the amount of golden eggs delivered each wave.
 func (s *ShiftSplatnet) GetEggsWaves() []int {
 	eggs := []int{}
 	for i := range s.WaveDetails {
@@ -107,10 +119,14 @@ func (s *ShiftSplatnet) GetEggsWaves() []int {
 	return eggs
 }
 
+// GetWaveCount implements lib.Shift{}.GetWaveCount() int.
+// This function returns the number of waves in the shift.
 func (s *ShiftSplatnet) GetWaveCount() int {
 	return len(s.WaveDetails)
 }
 
+// GetTime implements lib.Shift{}.GetTime() time.Time
+// This function returns the time at which the shift started.
 func (s *ShiftSplatnet) GetTime() time.Time {
 	return time.Unix(s.PlayTime, 0)
 }
